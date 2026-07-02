@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pragati Vidyalaya — Election Result Reveal 2026-27</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Bungee&display=swap" rel="stylesheet"/>
+<script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+<style>
+:root{
+  --navy:#0b1f3a;--navy2:#132c52;--gold:#fbbf24;--gold2:#f59e0b;--blue:#2563eb;
+  --text:#eaf1ff;--muted:#8fa3c8;--green:#10b981;--red:#ef4444;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:radial-gradient(1200px 800px at 50% -10%,#1b3a6b 0%,var(--navy) 55%,#060e1c 100%);color:var(--text);overflow-x:hidden;}
+.screen{display:none;min-height:100vh;}
+.screen.on{display:block;}
+button{font-family:'Plus Jakarta Sans',sans-serif;cursor:pointer;}
+input,select{font-family:'Plus Jakarta Sans',sans-serif;}
+
+/* ---------- LANDING ---------- */
+#landing{display:none;align-items:center;justify-content:center;padding:20px;}
+#landing.on{display:flex;}
+.land-card{max-width:560px;width:100%;text-align:center;}
+.land-logo{width:76px;height:76px;margin:0 auto 14px;background:linear-gradient(135deg,var(--gold),#d97706);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:34px;box-shadow:0 10px 40px rgba(251,191,36,.35);}
+.land-card h1{font-size:26px;font-weight:800;letter-spacing:2px;}
+.land-card .sub{color:var(--gold);font-weight:800;letter-spacing:3px;font-size:14px;margin:6px 0 2px;}
+.land-card .yr{color:var(--muted);font-size:13px;margin-bottom:30px;letter-spacing:2px;}
+.land-btns{display:flex;flex-direction:column;gap:12px;}
+.land-btn{display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.14);border-radius:16px;padding:18px 20px;color:var(--text);text-align:left;transition:all .15s;}
+.land-btn:hover{background:rgba(255,255,255,.12);border-color:var(--gold);transform:translateY(-2px);}
+.land-btn .lb-icon{font-size:30px;}
+.land-btn .lb-t{font-size:16px;font-weight:800;}
+.land-btn .lb-d{font-size:12px;color:var(--muted);margin-top:2px;}
+
+/* ---------- SETUP ---------- */
+#setup{padding:24px 16px 80px;max-width:860px;margin:0 auto;}
+.setup-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
+.setup-head h2{font-size:20px;font-weight:800;}
+.s-note{background:rgba(251,191,36,.12);border:1px solid rgba(251,191,36,.4);border-radius:12px;padding:12px 14px;font-size:12.5px;line-height:1.6;color:#ffe9b0;margin-bottom:18px;}
+.post-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:16px;margin-bottom:14px;}
+.post-top{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap;}
+.post-top input{background:rgba(0,0,0,.25);border:1.5px solid rgba(255,255,255,.15);border-radius:8px;padding:9px 12px;color:var(--text);font-size:14px;font-weight:700;outline:none;}
+.post-top input:focus{border-color:var(--gold);}
+.inp-icon{width:64px;text-align:center;font-size:18px!important;}
+.inp-post{flex:1;min-width:180px;}
+.cand-row{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap;}
+.cand-row input{background:rgba(0,0,0,.25);border:1.5px solid rgba(255,255,255,.15);border-radius:8px;padding:8px 10px;color:var(--text);font-size:13px;outline:none;}
+.cand-row input:focus{border-color:var(--blue);}
+.inp-name{flex:2;min-width:140px;}
+.inp-cls{width:90px;}
+.inp-votes{width:90px;}
+.photo-btn{width:40px;height:40px;border-radius:10px;border:1.5px dashed rgba(255,255,255,.3);background:rgba(0,0,0,.2);color:var(--muted);font-size:16px;overflow:hidden;flex-shrink:0;position:relative;}
+.photo-btn img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+.mini-btn{border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;}
+.mb-red{background:rgba(239,68,68,.18);color:#fca5a5;}
+.mb-red:hover{background:var(--red);color:#fff;}
+.mb-add{background:rgba(37,99,235,.25);color:#93c5fd;margin-top:4px;}
+.mb-add:hover{background:var(--blue);color:#fff;}
+.big-btn{border:none;border-radius:12px;padding:14px 22px;font-size:14px;font-weight:800;letter-spacing:.5px;}
+.bb-gold{background:linear-gradient(135deg,var(--gold),#d97706);color:#3b2300;box-shadow:0 6px 24px rgba(251,191,36,.3);}
+.bb-gold:hover{filter:brightness(1.1);}
+.bb-ghost{background:rgba(255,255,255,.08);color:var(--text);border:1.5px solid rgba(255,255,255,.18);}
+.bb-ghost:hover{background:rgba(255,255,255,.15);}
+.opt-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 14px;margin-bottom:10px;font-size:13.5px;font-weight:600;}
+.opt-row input[type=checkbox]{width:20px;height:20px;accent-color:var(--gold);}
+.setup-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;}
+
+/* ---------- DISPLAY ---------- */
+#display{position:fixed;inset:0;overflow:hidden;background:radial-gradient(1400px 900px at 50% -10%,#1b3a6b 0%,var(--navy) 55%,#060e1c 100%);}
+#stars{position:absolute;inset:0;pointer-events:none;z-index:1;}
+.star{position:absolute;color:#cfe0ff;opacity:.5;animation:twinkle 3s ease-in-out infinite;font-size:10px;}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(.8);}50%{opacity:.85;transform:scale(1.15);}}
+#stage{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;padding:3vmin;}
+#confettiCanvas{position:absolute;inset:0;z-index:5;pointer-events:none;}
+#hud{position:absolute;left:0;right:0;bottom:0;z-index:6;display:flex;justify-content:space-between;align-items:flex-end;padding:14px 18px;pointer-events:none;font-size:12px;color:var(--muted);opacity:.85;}
+#hud .hud-box{background:rgba(6,14,28,.65);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:8px 12px;pointer-events:auto;backdrop-filter:blur(4px);}
+#hud b{color:var(--gold);letter-spacing:2px;font-size:14px;}
+#hud .conn-on{color:var(--green);font-weight:700;}
+.hud-btns{display:flex;gap:6px;margin-top:6px;}
+.hud-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:var(--text);border-radius:6px;padding:4px 9px;font-size:11px;font-weight:700;}
+.hud-btn:hover{background:rgba(255,255,255,.18);}
+
+/* title slide */
+.slide{text-align:center;width:100%;max-width:1400px;}
+.t-school{font-size:5.2vmin;font-weight:800;letter-spacing:1vmin;color:#fff;animation:fadeUp .8s both;}
+.t-line{width:22vmin;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:2.4vmin auto;animation:fadeUp .8s .2s both;}
+.t-event{font-size:3.4vmin;font-weight:800;letter-spacing:.7vmin;color:#bcd3ff;animation:fadeUp .8s .35s both;}
+.t-year{font-size:2.6vmin;font-weight:700;letter-spacing:.6vmin;color:var(--muted);margin-top:1vmin;animation:fadeUp .8s .5s both;}
+.t-result{font-family:'Bungee',cursive;font-size:12vmin;margin-top:3.5vmin;background:linear-gradient(90deg,#f59e0b 20%,#fff7d6 40%,#fbbf24 60%,#d97706 80%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:fadeUp .9s .7s both,shine 2.6s linear 1.2s infinite;}
+@keyframes shine{to{background-position:200% center;}}
+.t-hint{margin-top:5vmin;font-size:1.9vmin;color:var(--muted);animation:pulseSoft 2s ease-in-out infinite;}
+@keyframes pulseSoft{0%,100%{opacity:.45;}50%{opacity:1;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(5vmin);}to{opacity:1;transform:none;}}
+
+/* post intro slide */
+.pi-label{font-size:2.6vmin;font-weight:800;letter-spacing:.8vmin;color:var(--muted);animation:fadeUp .6s both;}
+.pi-icon{font-size:13vmin;margin:2.5vmin 0;animation:popIn .7s .25s cubic-bezier(.2,1.6,.4,1) both;}
+.pi-name{font-family:'Bungee',cursive;font-size:9vmin;color:#fff;text-shadow:0 0 6vmin rgba(37,99,235,.8);animation:popIn .7s .45s cubic-bezier(.2,1.6,.4,1) both;}
+.pi-sub{margin-top:2.5vmin;font-size:2.4vmin;color:var(--gold);font-weight:700;letter-spacing:.3vmin;animation:fadeUp .6s .8s both;}
+@keyframes popIn{from{opacity:0;transform:scale(.2);}to{opacity:1;transform:scale(1);}}
+
+/* candidates slide */
+.c-head{font-size:3vmin;font-weight:800;letter-spacing:.4vmin;margin-bottom:1vmin;color:#fff;}
+.c-sub{font-size:2vmin;color:var(--muted);margin-bottom:3.5vmin;}
+.c-grid{display:flex;flex-wrap:wrap;gap:2.4vmin;justify-content:center;}
+.c-card{width:24vmin;min-width:170px;background:rgba(255,255,255,.06);border:2px solid rgba(255,255,255,.15);border-radius:2.2vmin;padding:2.6vmin 1.8vmin;animation:flyIn .6s cubic-bezier(.2,1.4,.4,1) both;transition:all .3s;}
+@keyframes flyIn{from{opacity:0;transform:translateY(9vmin) scale(.7);}to{opacity:1;transform:none;}}
+.c-card.spot{border-color:var(--gold);background:rgba(251,191,36,.16);box-shadow:0 0 5vmin rgba(251,191,36,.5);transform:scale(1.07);}
+.c-card.dim{opacity:.35;filter:grayscale(.7);transform:scale(.95);}
+.c-av{width:11vmin;height:11vmin;min-width:80px;min-height:80px;border-radius:50%;margin:0 auto 1.6vmin;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:4.5vmin;font-weight:800;color:#fff;overflow:hidden;border:3px solid rgba(255,255,255,.35);}
+.c-av img{width:100%;height:100%;object-fit:cover;}
+.c-name{font-size:2.3vmin;font-weight:800;text-align:center;color:#fff;}
+.c-cls{font-size:1.7vmin;color:var(--muted);text-align:center;margin-top:.5vmin;}
+
+/* counting slide */
+.count-wrap{max-width:110vmin;margin:0 auto;text-align:left;}
+.count-title{text-align:center;font-size:3vmin;font-weight:800;margin-bottom:.6vmin;color:#fff;letter-spacing:.3vmin;}
+.count-live{text-align:center;font-size:1.9vmin;color:#fda4af;font-weight:800;letter-spacing:.4vmin;margin-bottom:4vmin;animation:pulseSoft 1s infinite;}
+.bar-row{display:flex;align-items:center;gap:2vmin;margin-bottom:2.6vmin;animation:fadeUp .5s both;}
+.bar-av{width:7.5vmin;height:7.5vmin;min-width:56px;min-height:56px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:3vmin;color:#fff;overflow:hidden;border:2px solid rgba(255,255,255,.3);flex-shrink:0;}
+.bar-av img{width:100%;height:100%;object-fit:cover;}
+.bar-main{flex:1;}
+.bar-name{font-size:2.1vmin;font-weight:800;margin-bottom:.7vmin;color:#fff;}
+.bar-track{height:4.4vmin;background:rgba(255,255,255,.08);border-radius:3vmin;overflow:hidden;border:1px solid rgba(255,255,255,.12);}
+.bar-fill{height:100%;width:0%;border-radius:3vmin;background:linear-gradient(90deg,#2563eb,#60a5fa);transition:width .12s linear;position:relative;}
+.bar-row.lead .bar-fill{background:linear-gradient(90deg,#d97706,var(--gold));box-shadow:0 0 3vmin rgba(251,191,36,.55);}
+.bar-votes{width:12vmin;min-width:80px;text-align:right;font-size:3.4vmin;font-weight:800;font-variant-numeric:tabular-nums;color:#fff;}
+.bar-row.lead .bar-votes{color:var(--gold);}
+.count-hint{text-align:center;margin-top:3vmin;font-size:1.9vmin;color:var(--muted);opacity:0;transition:opacity .5s;}
+.count-hint.show{opacity:1;animation:pulseSoft 2s infinite;}
+
+/* countdown overlay */
+#bigNum{position:absolute;inset:0;z-index:7;display:none;align-items:center;justify-content:center;background:rgba(4,10,22,.72);backdrop-filter:blur(3px);}
+#bigNum.on{display:flex;}
+.bn-inner{text-align:center;}
+.bn-label{font-size:3.6vmin;font-weight:800;letter-spacing:.7vmin;color:#fff;margin-bottom:2vmin;animation:pulseSoft 1.2s infinite;}
+.bn-num{font-family:'Bungee',cursive;font-size:30vmin;line-height:1;color:var(--gold);text-shadow:0 0 8vmin rgba(251,191,36,.8);animation:numPop .95s cubic-bezier(.2,1.5,.4,1) both;}
+@keyframes numPop{0%{opacity:0;transform:scale(2.6);}30%{opacity:1;transform:scale(1);}80%{opacity:1;}100%{opacity:0;transform:scale(.75);}}
+
+/* winner slide */
+.w-wrap{position:relative;}
+.w-rays{position:absolute;left:50%;top:44%;width:190vmin;height:190vmin;transform:translate(-50%,-50%);background:conic-gradient(from 0deg,rgba(251,191,36,.14) 0deg 12deg,transparent 12deg 30deg,rgba(251,191,36,.14) 30deg 42deg,transparent 42deg 60deg,rgba(251,191,36,.14) 60deg 72deg,transparent 72deg 90deg,rgba(251,191,36,.14) 90deg 102deg,transparent 102deg 120deg,rgba(251,191,36,.14) 120deg 132deg,transparent 132deg 150deg,rgba(251,191,36,.14) 150deg 162deg,transparent 162deg 180deg,rgba(251,191,36,.14) 180deg 192deg,transparent 192deg 210deg,rgba(251,191,36,.14) 210deg 222deg,transparent 222deg 240deg,rgba(251,191,36,.14) 240deg 252deg,transparent 252deg 270deg,rgba(251,191,36,.14) 270deg 282deg,transparent 282deg 300deg,rgba(251,191,36,.14) 300deg 312deg,transparent 312deg 330deg,rgba(251,191,36,.14) 330deg 342deg,transparent 342deg 360deg);border-radius:50%;animation:raysSpin 22s linear infinite;pointer-events:none;}
+@keyframes raysSpin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+.w-inner{position:relative;text-align:center;}
+.w-post{font-size:2.8vmin;font-weight:800;letter-spacing:.6vmin;color:#bcd3ff;animation:fadeUp .5s both;}
+.w-crown{font-size:11vmin;line-height:1;animation:crownDrop 1s cubic-bezier(.3,1.6,.4,1) .15s both;}
+@keyframes crownDrop{0%{opacity:0;transform:translateY(-16vmin) rotate(-25deg) scale(.4);}60%{opacity:1;transform:translateY(1vmin) rotate(6deg) scale(1.08);}100%{opacity:1;transform:none;}}
+.w-av{width:22vmin;height:22vmin;min-width:130px;min-height:130px;border-radius:50%;margin:1vmin auto 2vmin;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:9vmin;font-weight:800;color:#fff;overflow:hidden;border:.9vmin solid var(--gold);box-shadow:0 0 9vmin rgba(251,191,36,.65);animation:popIn .8s .35s cubic-bezier(.2,1.6,.4,1) both;}
+.w-av img{width:100%;height:100%;object-fit:cover;}
+.w-name{font-family:'Bungee',cursive;font-size:9.5vmin;line-height:1.1;background:linear-gradient(90deg,#f59e0b,#fff7d6,#fbbf24);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:popIn .8s .55s cubic-bezier(.2,1.6,.4,1) both,shine 3s linear 1.4s infinite;}
+.w-cls{font-size:2.4vmin;color:var(--muted);font-weight:700;margin-top:1vmin;animation:fadeUp .6s .8s both;}
+.w-votes{display:inline-block;margin-top:1.8vmin;background:rgba(251,191,36,.15);border:1px solid rgba(251,191,36,.5);color:var(--gold);border-radius:4vmin;padding:1vmin 3vmin;font-size:2.4vmin;font-weight:800;animation:fadeUp .6s .95s both;}
+.w-clap{margin-top:3vmin;font-size:3vmin;font-weight:800;color:#fff;letter-spacing:.2vmin;animation:clapPulse 1s ease-in-out 1.2s infinite,fadeUp .6s 1.1s both;}
+@keyframes clapPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);color:var(--gold);}}
+
+/* finale */
+.f-title{font-family:'Bungee',cursive;font-size:6vmin;background:linear-gradient(90deg,#f59e0b,#fff7d6,#fbbf24);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 3s linear infinite;margin-bottom:1vmin;}
+.f-sub{font-size:2.2vmin;color:var(--muted);letter-spacing:.4vmin;margin-bottom:4vmin;}
+.f-grid{display:flex;flex-wrap:wrap;gap:2vmin;justify-content:center;max-width:150vmin;margin:0 auto;}
+.f-card{width:21vmin;min-width:150px;background:rgba(251,191,36,.08);border:1.5px solid rgba(251,191,36,.4);border-radius:2vmin;padding:2.2vmin 1.4vmin;animation:flyIn .6s both;}
+.f-av{width:9vmin;height:9vmin;min-width:64px;min-height:64px;border-radius:50%;margin:0 auto 1.2vmin;background:linear-gradient(135deg,#2563eb,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:3.6vmin;font-weight:800;color:#fff;overflow:hidden;border:3px solid var(--gold);}
+.f-av img{width:100%;height:100%;object-fit:cover;}
+.f-post{font-size:1.6vmin;font-weight:800;color:var(--gold);letter-spacing:.15vmin;text-align:center;text-transform:uppercase;}
+.f-name{font-size:2vmin;font-weight:800;color:#fff;text-align:center;margin-top:.5vmin;}
+.f-thanks{margin-top:4.5vmin;font-size:2.4vmin;color:#fff;font-weight:700;animation:clapPulse 1.4s infinite;}
+
+/* ---------- REMOTE ---------- */
+#remote{padding:20px 16px 40px;max-width:460px;margin:0 auto;min-height:100vh;display:none;flex-direction:column;}
+#remote.on{display:flex;}
+.rem-head{text-align:center;margin-bottom:22px;}
+.rem-head h2{font-size:18px;font-weight:800;letter-spacing:1px;}
+.rem-head p{font-size:12px;color:var(--muted);margin-top:3px;}
+.code-box{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:22px 18px;text-align:center;}
+.code-box p{font-size:13px;color:var(--muted);margin-bottom:14px;line-height:1.6;}
+#codeInput{width:180px;background:rgba(0,0,0,.35);border:2px solid rgba(255,255,255,.2);border-radius:12px;color:#fff;font-size:34px;font-weight:800;letter-spacing:12px;text-align:center;padding:10px 0 10px 12px;outline:none;}
+#codeInput:focus{border-color:var(--gold);}
+.rem-status{text-align:center;font-size:13px;font-weight:700;margin:14px 0;min-height:20px;}
+.rs-ok{color:var(--green);} .rs-err{color:#fca5a5;} .rs-wait{color:var(--gold);}
+#padBox{display:none;flex-direction:column;gap:14px;flex:1;}
+#padBox.on{display:flex;}
+.pad-state{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:14px 16px;text-align:center;}
+.pad-state .ps-now{font-size:11px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;font-weight:700;}
+.pad-state .ps-label{font-size:17px;font-weight:800;margin-top:4px;color:#fff;}
+.pad-state .ps-prog{font-size:11px;color:var(--gold);margin-top:6px;font-weight:700;}
+#nextBtn{border:none;border-radius:22px;padding:34px 20px;font-size:22px;font-weight:800;background:linear-gradient(135deg,var(--gold),#d97706);color:#3b2300;box-shadow:0 10px 40px rgba(251,191,36,.35);letter-spacing:.5px;line-height:1.3;}
+#nextBtn:active{transform:scale(.97);}
+.pad-row{display:flex;gap:10px;}
+.pad-sm{flex:1;border:none;border-radius:14px;padding:16px 10px;font-size:14px;font-weight:800;background:rgba(255,255,255,.08);color:var(--text);border:1.5px solid rgba(255,255,255,.16);}
+.pad-sm:active{background:rgba(255,255,255,.2);}
+.rem-foot{text-align:center;font-size:11px;color:var(--muted);margin-top:16px;line-height:1.7;}
+.back-link{background:none;border:none;color:var(--muted);font-size:12px;text-decoration:underline;margin-top:18px;}
+@media(max-width:600px){
+  .t-school{font-size:7vmin;} .t-result{font-size:15vmin;}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LANDING ============ -->
+<div id="landing" class="screen on">
+  <div class="land-card">
+    <div class="land-logo">🗳️</div>
+    <h1>PRAGATI VIDYALAYA</h1>
+    <div class="sub">SCHOOL PARLIAMENT ELECTION</div>
+    <div class="yr">2026-27 &nbsp;•&nbsp; RESULT CEREMONY</div>
+    <div class="land-btns">
+      <button class="land-btn" onclick="openDisplay()">
+        <span class="lb-icon">📺</span>
+        <span><span class="lb-t">Big Screen — Result Reveal</span><br/><span class="lb-d">Open this on the projector / smart board</span></span>
+      </button>
+      <button class="land-btn" onclick="openRemote()">
+        <span class="lb-icon">📱</span>
+        <span><span class="lb-t">Teacher Remote</span><br/><span class="lb-d">Control the big screen from your phone</span></span>
+      </button>
+      <button class="land-btn" onclick="openSetup()">
+        <span class="lb-icon">⚙️</span>
+        <span><span class="lb-t">Setup — Posts &amp; Candidates</span><br/><span class="lb-d">Enter posts, candidates, photos and votes</span></span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SETUP ============ -->
+<div id="setup" class="screen">
+  <div class="setup-head">
+    <h2>⚙️ Election Setup</h2>
+    <button class="big-btn bb-ghost" onclick="goLanding()">← Back</button>
+  </div>
+  <div class="s-note">
+    ✏️ Enter each <b>post</b> (Head Boy, Head Girl…), its <b>candidates</b> and their <b>votes</b>.
+    Everything saves automatically on this device. The candidate with the highest votes is revealed as the winner.
+    Sample data is pre-filled — replace it with your real candidates.
+  </div>
+  <div class="opt-row"><input type="checkbox" id="optShowVotes" onchange="D.showVotes=this.checked;saveData();"/><label for="optShowVotes">Show live vote-count race on screen (thrilling bar animation). Turn OFF to reveal only the winner's name.</label></div>
+  <div class="opt-row"><input type="checkbox" id="optSound" onchange="D.sound=this.checked;saveData();"/><label for="optSound">Sound effects (drumroll, countdown, fanfare)</label></div>
+  <div id="postList"></div>
+  <button class="big-btn bb-ghost" onclick="addPost()">＋ Add Post</button>
+  <div class="setup-actions">
+    <button class="big-btn bb-gold" onclick="openDisplay()">📺 Open Big Screen Now</button>
+  </div>
+  <input type="file" id="photoFile" accept="image/*" style="display:none"/>
+</div>
+
+<!-- ============ DISPLAY ============ -->
+<div id="display" class="screen">
+  <div id="stars"></div>
+  <div id="stage"></div>
+  <canvas id="confettiCanvas"></canvas>
+  <div id="bigNum"><div class="bn-inner"><div class="bn-label" id="bnLabel">AND THE WINNER IS…</div><div class="bn-num" id="bnNum">3</div></div></div>
+  <div id="hud">
+    <div class="hud-box">
+      📱 Remote code: <b id="hudCode">…</b> &nbsp;<span id="hudConn">— waiting</span>
+      <div style="margin-top:3px;opacity:.8;">Open this page on your phone → Teacher Remote → enter code</div>
+    </div>
+    <div class="hud-box" style="text-align:right;">
+      <span id="hudNext">Click / Space = Next</span>
+      <div class="hud-btns" style="justify-content:flex-end;">
+        <button class="hud-btn" onclick="event.stopPropagation();prevStep()">◀ Back</button>
+        <button class="hud-btn" onclick="event.stopPropagation();toggleMute(this)" id="muteBtn">🔊 Sound</button>
+        <button class="hud-btn" onclick="event.stopPropagation();goFullscreen()">⛶ Fullscreen</button>
+        <button class="hud-btn" onclick="event.stopPropagation();exitDisplay()">✕ Exit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ REMOTE ============ -->
+<div id="remote" class="screen">
+  <div class="rem-head">
+    <h2>📱 TEACHER REMOTE</h2>
+    <p>Pragati Vidyalaya — Election Result 2026-27</p>
+  </div>
+  <div class="code-box" id="codeBox">
+    <p>Enter the <b>4-digit code</b> shown at the bottom-left<br/>of the big screen:</p>
+    <input id="codeInput" inputmode="numeric" maxlength="4" placeholder="0000"/>
+    <div style="margin-top:16px;"><button class="big-btn bb-gold" onclick="remoteConnect()">🔗 Connect</button></div>
+  </div>
+  <div class="rem-status" id="remStatus"></div>
+  <div id="padBox">
+    <div class="pad-state">
+      <div class="ps-now">Now on screen</div>
+      <div class="ps-label" id="psLabel">—</div>
+      <div class="ps-prog" id="psProg"></div>
+    </div>
+    <button id="nextBtn" onclick="sendCmd('next')">▶ NEXT</button>
+    <div class="pad-row">
+      <button class="pad-sm" onclick="sendCmd('prev')">◀ Back</button>
+      <button class="pad-sm" onclick="sendCmd('confetti')">🎊 Confetti</button>
+      <button class="pad-sm" onclick="sendCmd('mute')">🔇 Sound</button>
+    </div>
+    <div class="rem-foot">Keep this page open. The big NEXT button always shows<br/>what will happen when you press it — no surprises!</div>
+  </div>
+  <button class="back-link" onclick="location.reload()">← Back to menu</button>
+</div>
+
+<script>
+/* ================= DATA ================= */
+const LS_KEY='pv_election_2627';
+const SAMPLE={
+  school:'PRAGATI VIDYALAYA',event:'SCHOOL PARLIAMENT ELECTION',year:'2026-27',
+  showVotes:true,sound:true,
+  posts:[
+    {name:'Head Boy',icon:'👑',cands:[
+      {name:'Aarav Sharma',cls:'Class 10',votes:142,photo:''},
+      {name:'Rohan Patel',cls:'Class 10',votes:128,photo:''},
+      {name:'Vikram Singh',cls:'Class 9',votes:97,photo:''}]},
+    {name:'Head Girl',icon:'👑',cands:[
+      {name:'Ananya Reddy',cls:'Class 10',votes:151,photo:''},
+      {name:'Diya Nair',cls:'Class 10',votes:139,photo:''},
+      {name:'Priya Menon',cls:'Class 9',votes:88,photo:''}]},
+    {name:'Sports Captain (Boys)',icon:'🏆',cands:[
+      {name:'Arjun Kumar',cls:'Class 9',votes:120,photo:''},
+      {name:'Karan Verma',cls:'Class 10',votes:133,photo:''}]},
+    {name:'Sports Captain (Girls)',icon:'🏆',cands:[
+      {name:'Sneha Iyer',cls:'Class 10',votes:141,photo:''},
+      {name:'Kavya Das',cls:'Class 9',votes:118,photo:''}]},
+    {name:'Cultural Secretary',icon:'🎭',cands:[
+      {name:'Ishaan Gupta',cls:'Class 9',votes:104,photo:''},
+      {name:'Meera Joshi',cls:'Class 10',votes:126,photo:''}]},
+    {name:'Discipline Captain',icon:'🛡️',cands:[
+      {name:'Aditya Rao',cls:'Class 10',votes:117,photo:''},
+      {name:'Riya Bose',cls:'Class 10',votes:109,photo:''}]}
+  ]
+};
+let D;
+try{D=JSON.parse(localStorage.getItem(LS_KEY))||null;}catch(e){D=null;}
+if(!D||!D.posts){D=JSON.parse(JSON.stringify(SAMPLE));}
+function saveData(){try{localStorage.setItem(LS_KEY,JSON.stringify(D));}catch(e){alert('Could not save (storage full). Try smaller photos.');}}
+
+/* ================= NAV ================= */
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));document.getElementById(id).classList.add('on');}
+function goLanding(){show('landing');}
+function openSetup(){renderSetup();show('setup');}
+function openRemote(){show('remote');setTimeout(()=>document.getElementById('codeInput').focus(),150);}
+
+/* ================= SETUP UI ================= */
+function renderSetup(){
+  document.getElementById('optShowVotes').checked=!!D.showVotes;
+  document.getElementById('optSound').checked=D.sound!==false;
+  const box=document.getElementById('postList');box.innerHTML='';
+  D.posts.forEach((p,pi)=>{
+    const card=document.createElement('div');card.className='post-card';
+    let h=`<div class="post-top">
+      <input class="inp-icon" value="${esc(p.icon)}" onchange="D.posts[${pi}].icon=this.value;saveData();" title="Emoji icon"/>
+      <input class="inp-post" value="${esc(p.name)}" placeholder="Post name" onchange="D.posts[${pi}].name=this.value;saveData();"/>
+      <button class="mini-btn mb-red" onclick="delPost(${pi})">🗑 Remove Post</button>
+    </div>`;
+    p.cands.forEach((c,ci)=>{
+      h+=`<div class="cand-row">
+        <button class="photo-btn" onclick="pickPhoto(${pi},${ci})" title="Add photo">${c.photo?`<img src="${c.photo}"/>`:'📷'}</button>
+        <input class="inp-name" value="${esc(c.name)}" placeholder="Candidate name" onchange="D.posts[${pi}].cands[${ci}].name=this.value;saveData();"/>
+        <input class="inp-cls" value="${esc(c.cls)}" placeholder="Class" onchange="D.posts[${pi}].cands[${ci}].cls=this.value;saveData();"/>
+        <input class="inp-votes" type="number" min="0" value="${c.votes||0}" placeholder="Votes" onchange="D.posts[${pi}].cands[${ci}].votes=+this.value||0;saveData();"/>
+        <button class="mini-btn mb-red" onclick="delCand(${pi},${ci})">✕</button>
+      </div>`;
+    });
+    h+=`<button class="mini-btn mb-add" onclick="addCand(${pi})">＋ Add Candidate</button>`;
+    card.innerHTML=h;box.appendChild(card);
+  });
+}
+function esc(s){return String(s??'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+function addPost(){D.posts.push({name:'New Post',icon:'⭐',cands:[{name:'',cls:'',votes:0,photo:''},{name:'',cls:'',votes:0,photo:''}]});saveData();renderSetup();}
+function delPost(i){if(confirm('Remove this post?')){D.posts.splice(i,1);saveData();renderSetup();}}
+function addCand(pi){D.posts[pi].cands.push({name:'',cls:'',votes:0,photo:''});saveData();renderSetup();}
+function delCand(pi,ci){D.posts[pi].cands.splice(ci,1);saveData();renderSetup();}
+function pickPhoto(pi,ci){
+  const f=document.getElementById('photoFile');
+  f.onchange=()=>{
+    const file=f.files[0];if(!file)return;
+    const r=new FileReader();
+    r.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        const cv=document.createElement('canvas');const s=Math.min(1,260/Math.max(img.width,img.height));
+        cv.width=img.width*s;cv.height=img.height*s;
+        cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+        D.posts[pi].cands[ci].photo=cv.toDataURL('image/jpeg',.8);saveData();renderSetup();
+      };
+      img.src=e.target.result;
+    };
+    r.readAsDataURL(file);f.value='';
+  };
+  f.click();
+}
+
+/* ================= SOUND (WebAudio, no files needed) ================= */
+let AC=null,muted=false,drumTimer=null;
+function audio(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}if(AC&&AC.state==='suspended')AC.resume();return AC;}
+function sOn(){return D.sound!==false&&!muted&&audio();}
+function tick(freq=880,dur=.06,vol=.25){
+  if(!sOn())return;const t=AC.currentTime;
+  const o=AC.createOscillator(),g=AC.createGain();
+  o.type='square';o.frequency.value=freq;
+  g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.001,t+dur);
+  o.connect(g).connect(AC.destination);o.start(t);o.stop(t+dur);
+}
+function noiseHit(dur=.05,vol=.5,filterHz=1800){
+  if(!sOn())return;const t=AC.currentTime;
+  const len=AC.sampleRate*dur,buf=AC.createBuffer(1,len,AC.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*(1-i/len);
+  const src=AC.createBufferSource();src.buffer=buf;
+  const f=AC.createBiquadFilter();f.type='bandpass';f.frequency.value=filterHz;f.Q.value=.8;
+  const g=AC.createGain();g.gain.value=vol;
+  src.connect(f).connect(g).connect(AC.destination);src.start(t);
+}
+function startDrumroll(){
+  stopDrumroll();if(!sOn())return;
+  let iv=70;
+  drumTimer=setInterval(()=>{noiseHit(.045,.4,900+Math.random()*600);},iv);
+}
+function stopDrumroll(){if(drumTimer){clearInterval(drumTimer);drumTimer=null;}}
+function cymbal(){
+  if(!sOn())return;const t=AC.currentTime,dur=1.4;
+  const len=AC.sampleRate*dur,buf=AC.createBuffer(1,len,AC.sampleRate),d=buf.getChannelData(0);
+  for(let i=0;i<len;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/len,2);
+  const src=AC.createBufferSource();src.buffer=buf;
+  const f=AC.createBiquadFilter();f.type='highpass';f.frequency.value=4500;
+  const g=AC.createGain();g.gain.value=.5;
+  src.connect(f).connect(g).connect(AC.destination);src.start(t);
+}
+function fanfare(){
+  if(!sOn())return;const t=AC.currentTime;
+  const notes=[[523.25,0],[659.25,.14],[783.99,.28],[1046.5,.42]];
+  notes.forEach(([f0,dt])=>{
+    [f0,f0*.5].forEach((fr,k)=>{
+      const o=AC.createOscillator(),g=AC.createGain();
+      o.type=k?'triangle':'sawtooth';o.frequency.value=fr;
+      const st=t+dt,end=st+(dt>.4?1.6:.5);
+      g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(k?.12:.18,st+.02);
+      g.gain.exponentialRampToValueAtTime(.001,end);
+      o.connect(g).connect(AC.destination);o.start(st);o.stop(end);
+    });
+  });
+  // final chord
+  [523.25,659.25,783.99,1046.5].forEach(fr=>{
+    const o=AC.createOscillator(),g=AC.createGain();
+    o.type='sawtooth';o.frequency.value=fr;
+    const st=t+.56,end=st+2.2;
+    g.gain.setValueAtTime(0,st);g.gain.linearRampToValueAtTime(.09,st+.03);
+    g.gain.exponentialRampToValueAtTime(.001,end);
+    o.connect(g).connect(AC.destination);o.start(st);o.stop(end);
+  });
+  cymbal();
+}
+function toggleMute(btn){muted=!muted;if(muted)stopDrumroll();
+  const b=btn||document.getElementById('muteBtn');if(b)b.textContent=muted?'🔇 Muted':'🔊 Sound';}
+
+/* ================= CONFETTI ================= */
+let confParts=[],confCtx=null,confRun=false;
+function confettiInit(){
+  const cv=document.getElementById('confettiCanvas');
+  cv.width=innerWidth;cv.height=innerHeight;confCtx=cv.getContext('2d');
+  addEventListener('resize',()=>{cv.width=innerWidth;cv.height=innerHeight;});
+  if(!confRun){confRun=true;requestAnimationFrame(confLoop);}
+}
+const CONF_COLORS=['#fbbf24','#f59e0b','#ef4444','#3b82f6','#10b981','#a78bfa','#f472b6','#ffffff'];
+function burst(x,y,n=90,spread=Math.PI,dir=-Math.PI/2,power=13){
+  for(let i=0;i<n;i++){
+    const a=dir+(Math.random()-.5)*spread,v=power*(.4+Math.random()*.8);
+    confParts.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,
+      w:5+Math.random()*7,h:8+Math.random()*8,rot:Math.random()*6.28,vr:(Math.random()-.5)*.4,
+      c:CONF_COLORS[(Math.random()*CONF_COLORS.length)|0],life:1,decay:.004+Math.random()*.006});
+  }
+}
+function bigCelebration(){
+  const W=innerWidth,H=innerHeight;
+  burst(W*.08,H*.95,110,1.1,-Math.PI/2.6,16);
+  burst(W*.92,H*.95,110,1.1,-Math.PI/1.6,16);
+  setTimeout(()=>burst(W*.5,H*1.02,130,1.6,-Math.PI/2,17),350);
+  setTimeout(()=>{burst(W*.2,H*.95,80,1,-Math.PI/2.4,15);burst(W*.8,H*.95,80,1,-Math.PI/1.7,15);},900);
+}
+function confLoop(){
+  if(confCtx){
+    const cv=confCtx.canvas;confCtx.clearRect(0,0,cv.width,cv.height);
+    confParts=confParts.filter(p=>p.life>0&&p.y<cv.height+40);
+    for(const p of confParts){
+      p.vy+=.22;p.vx*=.99;p.vy*=.995;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.life-=p.decay;
+      confCtx.save();confCtx.translate(p.x,p.y);confCtx.rotate(p.rot);
+      confCtx.globalAlpha=Math.max(0,Math.min(1,p.life*1.4));
+      confCtx.fillStyle=p.c;confCtx.fillRect(-p.w/2,-p.h/2,p.w,Math.abs(Math.sin(p.rot))*p.h+2);
+      confCtx.restore();
+    }
+  }
+  requestAnimationFrame(confLoop);
+}
+
+/* ================= DISPLAY / CEREMONY ================= */
+let steps=[],stepIdx=0,busy=false,countDone=false,countSkip=null,shuffleTimer=null;
+function winnerOf(p){let w=p.cands[0];for(const c of p.cands){if((c.votes||0)>(w.votes||0))w=c;}return w;}
+function validPosts(){return D.posts.filter(p=>p.cands.some(c=>(c.name||'').trim()));}
+function buildSteps(){
+  steps=[{t:'title'}];
+  validPosts().forEach((p,i)=>{
+    steps.push({t:'intro',p});steps.push({t:'cands',p});
+    if(D.showVotes)steps.push({t:'count',p});
+    steps.push({t:'reveal',p});
+  });
+  steps.push({t:'finale'});
+}
+function openDisplay(){
+  buildSteps();stepIdx=0;
+  show('display');confettiInit();makeStars();audio();
+  renderStep();initHostPeer();
+}
+function exitDisplay(){stopDrumroll();clearTimeout(shuffleTimer);show('landing');}
+function makeStars(){
+  const box=document.getElementById('stars');if(box.childElementCount)return;
+  for(let i=0;i<70;i++){
+    const s=document.createElement('span');s.className='star';s.textContent='✦';
+    s.style.left=Math.random()*100+'%';s.style.top=Math.random()*100+'%';
+    s.style.animationDelay=(Math.random()*3)+'s';s.style.fontSize=(6+Math.random()*9)+'px';
+    box.appendChild(s);
+  }
+}
+function goFullscreen(){
+  const el=document.documentElement;
+  if(!document.fullscreenElement){(el.requestFullscreen||el.webkitRequestFullscreen||function(){}).call(el);}
+  else{(document.exitFullscreen||function(){}).call(document);}
+}
+
+function nextLabel(){
+  const cur=steps[stepIdx],nx=steps[stepIdx+1];
+  if(cur.t==='count'&&!countDone)return '⏩ Skip to final count';
+  if(!nx)return '🔁 Restart ceremony';
+  if(nx.t==='intro')return '▶ Next post: '+nx.p.name;
+  if(nx.t==='cands')return '👥 Show candidates';
+  if(nx.t==='count')return '🥁 Start vote counting';
+  if(nx.t==='reveal')return '🎉 REVEAL WINNER';
+  if(nx.t==='finale')return '🏆 Grand finale — all winners';
+  return '▶ Next';
+}
+function curLabel(){
+  const s=steps[stepIdx];
+  if(s.t==='title')return 'Title screen';
+  if(s.t==='intro')return 'Post: '+s.p.name;
+  if(s.t==='cands')return s.p.name+' — candidates';
+  if(s.t==='count')return s.p.name+' — counting votes';
+  if(s.t==='reveal')return s.p.name+' — WINNER: '+ (winnerOf(s.p).name||'—');
+  if(s.t==='finale')return 'Grand finale';
+  return '';
+}
+function syncHud(){
+  document.getElementById('hudNext').textContent='Next: '+nextLabel().replace(/^[^ ]+ /,'');
+  broadcastState();
+}
+
+function nextStep(){
+  if(busy)return;
+  const cur=steps[stepIdx];
+  if(cur.t==='count'&&!countDone){if(countSkip)countSkip();return;}
+  if(stepIdx>=steps.length-1){stepIdx=0;}else{stepIdx++;}
+  renderStep();
+}
+function prevStep(){
+  if(busy)return;
+  stopDrumroll();clearTimeout(shuffleTimer);
+  // jump to the intro of the previous post (or title)
+  let i=stepIdx-1;
+  while(i>0&&steps[i].t!=='intro')i--;
+  if(steps[stepIdx].t==='intro'){ // already at an intro: go one post further back
+    i=stepIdx-1;while(i>0&&steps[i].t!=='intro')i--;
+  }
+  stepIdx=Math.max(0,i);
+  renderStep();
+}
+
+function renderStep(){
+  stopDrumroll();clearTimeout(shuffleTimer);countDone=false;countSkip=null;
+  const st=steps[stepIdx],stage=document.getElementById('stage');
+  if(st.t==='title')renderTitle(stage);
+  else if(st.t==='intro')renderIntro(stage,st.p);
+  else if(st.t==='cands')renderCands(stage,st.p);
+  else if(st.t==='count')renderCount(stage,st.p);
+  else if(st.t==='reveal')renderReveal(stage,st.p);
+  else if(st.t==='finale')renderFinale(stage);
+  syncHud();
+}
+
+function avatarHtml(c,cls){
+  const init=esc((c.name||'?').trim().charAt(0).toUpperCase()||'?');
+  return `<div class="${cls}">${c.photo?`<img src="${c.photo}"/>`:init}</div>`;
+}
+
+function renderTitle(stage){
+  stage.innerHTML=`<div class="slide">
+    <div class="t-school">${esc(D.school)}</div>
+    <div class="t-line"></div>
+    <div class="t-event">${esc(D.event)}</div>
+    <div class="t-year">${esc(D.year)}</div>
+    <div class="t-result">RESULT</div>
+    <div class="t-hint">Press NEXT on the remote to begin the ceremony ✨</div>
+  </div>`;
+}
+function renderIntro(stage,p){
+  tick(660,.12,.3);
+  stage.innerHTML=`<div class="slide">
+    <div class="pi-label">RESULT FOR THE POST OF</div>
+    <div class="pi-icon">${esc(p.icon||'⭐')}</div>
+    <div class="pi-name">${esc(p.name)}</div>
+    <div class="pi-sub">Who will it be? 🤔</div>
+  </div>`;
+}
+function renderCands(stage,p){
+  const cands=p.cands.filter(c=>(c.name||'').trim());
+  let cardsH=cands.map((c,i)=>`<div class="c-card" data-ci="${i}" style="animation-delay:${.15+i*.25}s">
+      ${avatarHtml(c,'c-av')}
+      <div class="c-name">${esc(c.name)}</div>
+      <div class="c-cls">${esc(c.cls||'')}</div>
+    </div>`).join('');
+  stage.innerHTML=`<div class="slide">
+    <div class="c-head">${esc(p.icon||'')} ${esc(p.name)}</div>
+    <div class="c-sub">THE CANDIDATES</div>
+    <div class="c-grid">${cardsH}</div>
+  </div>`;
+  cands.forEach((_,i)=>setTimeout(()=>tick(520+i*90,.08,.2),150+i*250));
+}
+function renderCount(stage,p){
+  const cands=p.cands.filter(c=>(c.name||'').trim());
+  const rows=cands.map((c,i)=>`<div class="bar-row" data-ci="${i}" style="animation-delay:${i*.12}s">
+      ${avatarHtml(c,'bar-av')}
+      <div class="bar-main"><div class="bar-name">${esc(c.name)}</div>
+      <div class="bar-track"><div class="bar-fill" id="bf${i}"></div></div></div>
+      <div class="bar-votes" id="bv${i}">0</div>
+    </div>`).join('');
+  stage.innerHTML=`<div class="slide"><div class="count-wrap">
+    <div class="count-title">${esc(p.icon||'')} ${esc(p.name)} — VOTE COUNT</div>
+    <div class="count-live">● LIVE COUNTING</div>
+    ${rows}
+    <div class="count-hint" id="countHint">Counting complete! Press NEXT to reveal the winner 🎉</div>
+  </div></div>`;
+  animateCount(cands);
+}
+function animateCount(cands){
+  busy=false;countDone=false;
+  const targets=cands.map(c=>c.votes||0),maxT=Math.max(...targets,1);
+  const DUR=9000,t0=performance.now();
+  const seeds=cands.map(()=>1+Math.random()*4);
+  startDrumroll();
+  let raf,skipped=false;
+  countSkip=()=>{skipped=true;};
+  function frame(now){
+    let t=Math.min(1,(now-t0)/DUR);
+    if(skipped)t=1;
+    const ease=t<.85?(1-Math.pow(1-t/.85,3))*.96:.96+.04*((t-.85)/.15);
+    const wob=(1-t)*maxT*.16;
+    let vals=targets.map((tg,i)=>Math.max(0,Math.round(tg*ease+Math.sin(now/300*seeds[i]+i*2.1)*wob)));
+    if(t>=1)vals=targets.slice();
+    const curMax=Math.max(...vals,1);
+    let leadI=0;vals.forEach((v,i)=>{if(v>vals[leadI])leadI=i;});
+    vals.forEach((v,i)=>{
+      const f=document.getElementById('bf'+i),b=document.getElementById('bv'+i);
+      if(!f)return;
+      f.style.width=(v/curMax*100)+'%';b.textContent=v;
+      const row=f.closest('.bar-row');row.classList.toggle('lead',i===leadI&&t>.3);
+    });
+    if(t<1){raf=requestAnimationFrame(frame);}
+    else{
+      stopDrumroll();cymbal();countDone=true;countSkip=null;
+      const h=document.getElementById('countHint');if(h)h.classList.add('show');
+      syncHud();
+    }
+  }
+  raf=requestAnimationFrame(frame);
+}
+function renderReveal(stage,p){
+  const w=winnerOf(p);
+  busy=true;
+  // if the previous step was candidates (no vote race), run a suspense spotlight shuffle first
+  const prev=steps[stepIdx-1];
+  const doShuffle=prev&&prev.t==='cands'&&!D.showVotes;
+  const doCountdown=()=>{
+    const overlay=document.getElementById('bigNum'),numEl=document.getElementById('bnNum');
+    document.getElementById('bnLabel').textContent='AND THE WINNER IS…';
+    overlay.classList.add('on');startDrumroll();
+    let n=3;
+    function stepNum(){
+      if(n===0){
+        overlay.classList.remove('on');stopDrumroll();
+        showWinner(stage,p,w);return;
+      }
+      numEl.textContent=n;numEl.style.animation='none';void numEl.offsetWidth;
+      numEl.style.animation='';tick(440+n*120,.15,.35);
+      n--;shuffleTimer=setTimeout(stepNum,1000);
+    }
+    stepNum();
+  };
+  if(doShuffle){
+    renderCands(stage,p);
+    const cards=[...stage.querySelectorAll('.c-card')];
+    const cands=p.cands.filter(c=>(c.name||'').trim());
+    const winIdx=cands.indexOf(w);
+    startDrumroll();
+    let i=0,delay=90,elapsed=0;
+    function spin(){
+      cards.forEach(c=>c.classList.remove('spot'));
+      cards[i%cards.length].classList.add('spot');
+      tick(700,.05,.2);
+      elapsed+=delay;
+      if(elapsed>4200&&i%cards.length===winIdx){
+        stopDrumroll();
+        cards.forEach((c,k)=>c.classList.toggle('dim',k!==winIdx));
+        shuffleTimer=setTimeout(()=>doCountdown(),800);
+        return;
+      }
+      i++;delay=Math.min(430,delay*1.06);
+      shuffleTimer=setTimeout(spin,delay);
+    }
+    shuffleTimer=setTimeout(spin,600);
+  }else{
+    doCountdown();
+  }
+}
+function showWinner(stage,p,w){
+  stage.innerHTML=`<div class="slide w-wrap">
+    <div class="w-rays"></div>
+    <div class="w-inner">
+      <div class="w-post">${esc(p.icon||'')} ${esc(p.name.toUpperCase())} ${esc(D.year)}</div>
+      <div class="w-crown">👑</div>
+      ${avatarHtml(w,'w-av')}
+      <div class="w-name">${esc(w.name)}</div>
+      ${w.cls?`<div class="w-cls">${esc(w.cls)}</div>`:''}
+      ${D.showVotes?`<div class="w-votes">🗳️ ${w.votes||0} VOTES</div>`:''}
+      <div class="w-clap">👏 GIVE A BIG ROUND OF APPLAUSE! 👏</div>
+    </div>
+  </div>`;
+  fanfare();bigCelebration();
+  setTimeout(bigCelebration,1600);
+  busy=false;syncHud();
+}
+function renderFinale(stage){
+  const cards=validPosts().map((p,i)=>{
+    const w=winnerOf(p);
+    return `<div class="f-card" style="animation-delay:${i*.18}s">
+      ${avatarHtml(w,'f-av')}
+      <div class="f-post">${esc(p.icon||'')} ${esc(p.name)}</div>
+      <div class="f-name">${esc(w.name)}</div>
+    </div>`;
+  }).join('');
+  stage.innerHTML=`<div class="slide">
+    <div class="f-title">YOUR SCHOOL PARLIAMENT</div>
+    <div class="f-sub">${esc(D.school)} • ${esc(D.event)} • ${esc(D.year)}</div>
+    <div class="f-grid">${cards}</div>
+    <div class="f-thanks">🎉 CONGRATULATIONS TO ALL WINNERS! 🎉</div>
+  </div>`;
+  fanfare();bigCelebration();
+  setTimeout(bigCelebration,1800);setTimeout(bigCelebration,3600);
+}
+
+/* display input: click / keys */
+document.getElementById('display').addEventListener('click',e=>{
+  if(e.target.closest('.hud-btn'))return;
+  nextStep();
+});
+addEventListener('keydown',e=>{
+  if(!document.getElementById('display').classList.contains('on'))return;
+  if(e.key===' '||e.key==='ArrowRight'||e.key==='Enter'){e.preventDefault();nextStep();}
+  else if(e.key==='ArrowLeft')prevStep();
+  else if(e.key==='c'||e.key==='C')bigCelebration();
+  else if(e.key==='m'||e.key==='M')toggleMute();
+  else if(e.key==='f'||e.key==='F')goFullscreen();
+});
+
+/* ================= REMOTE CONTROL (PeerJS) ================= */
+const PEER_PREFIX='pv-pragati-election-2627-';
+let hostPeer=null,hostConns=[],remotePeer=null,remoteConn=null;
+
+function initHostPeer(){
+  if(hostPeer)return; // already running
+  if(typeof Peer==='undefined'){
+    document.getElementById('hudCode').textContent='no internet';
+    document.getElementById('hudConn').textContent='— remote unavailable (screen still works by click/Space)';
+    return;
+  }
+  const code=String(Math.floor(1000+Math.random()*9000));
+  hostPeer=new Peer(PEER_PREFIX+code);
+  hostPeer.on('open',()=>{document.getElementById('hudCode').textContent=code;});
+  hostPeer.on('connection',conn=>{
+    hostConns.push(conn);
+    conn.on('open',()=>{setConnHud();broadcastState();});
+    conn.on('data',msg=>{
+      if(!msg||msg.type!=='cmd')return;
+      if(msg.cmd==='next')nextStep();
+      else if(msg.cmd==='prev')prevStep();
+      else if(msg.cmd==='confetti')bigCelebration();
+      else if(msg.cmd==='mute')toggleMute();
+    });
+    conn.on('close',()=>{hostConns=hostConns.filter(c=>c!==conn);setConnHud();});
+  });
+  hostPeer.on('error',err=>{
+    if(err.type==='unavailable-id'){hostPeer.destroy();hostPeer=null;initHostPeer();}
+  });
+}
+function setConnHud(){
+  const el=document.getElementById('hudConn');
+  const n=hostConns.filter(c=>c.open).length;
+  el.innerHTML=n?`<span class="conn-on">✓ remote connected</span>`:'— waiting';
+}
+function broadcastState(){
+  const state={type:'state',label:curLabel(),next:nextLabel(),
+    prog:(()=>{const s=steps[stepIdx];if(!s||!s.p)return '';
+      const ps=validPosts();return 'Post '+(ps.indexOf(s.p)+1)+' of '+ps.length;})()};
+  hostConns.forEach(c=>{if(c.open)try{c.send(state);}catch(e){}});
+}
+
+function remoteConnect(){
+  const code=document.getElementById('codeInput').value.trim();
+  const stat=document.getElementById('remStatus');
+  if(!/^\d{4}$/.test(code)){stat.className='rem-status rs-err';stat.textContent='Please enter the 4-digit code from the big screen.';return;}
+  if(typeof Peer==='undefined'){stat.className='rem-status rs-err';stat.textContent='Internet connection needed for the remote.';return;}
+  stat.className='rem-status rs-wait';stat.textContent='Connecting…';
+  if(remotePeer){remotePeer.destroy();remotePeer=null;}
+  remotePeer=new Peer();
+  remotePeer.on('open',()=>{
+    remoteConn=remotePeer.connect(PEER_PREFIX+code,{reliable:true});
+    let opened=false;
+    remoteConn.on('open',()=>{
+      opened=true;
+      stat.className='rem-status rs-ok';stat.textContent='✓ Connected to big screen';
+      document.getElementById('codeBox').style.display='none';
+      document.getElementById('padBox').classList.add('on');
+      if(navigator.vibrate)navigator.vibrate(60);
+    });
+    remoteConn.on('data',msg=>{
+      if(!msg||msg.type!=='state')return;
+      document.getElementById('psLabel').textContent=msg.label||'—';
+      document.getElementById('psProg').textContent=msg.prog||'';
+      document.getElementById('nextBtn').textContent=msg.next||'▶ NEXT';
+    });
+    remoteConn.on('close',()=>{
+      stat.className='rem-status rs-err';stat.textContent='Disconnected. Enter the code to reconnect.';
+      document.getElementById('codeBox').style.display='block';
+      document.getElementById('padBox').classList.remove('on');
+    });
+    setTimeout(()=>{if(!opened){stat.className='rem-status rs-err';stat.textContent='Could not find the big screen. Check the code and make sure the display page is open.';}},9000);
+  });
+  remotePeer.on('error',()=>{stat.className='rem-status rs-err';stat.textContent='Connection error. Check internet on both devices and try again.';});
+}
+function sendCmd(cmd){
+  if(remoteConn&&remoteConn.open){remoteConn.send({type:'cmd',cmd});if(navigator.vibrate)navigator.vibrate(30);}
+}
+</script>
+</body>
+</html>
