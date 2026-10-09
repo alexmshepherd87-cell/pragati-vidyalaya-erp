@@ -5,6 +5,7 @@ Edubytez teaching resources for the NCERT textbook *Understanding Society: India
 | Resource | Where | What it contains |
 | --- | --- | --- |
 | Edubytez Chapter PPTs | `PPT/Edubytez_Grade9_SST_Ch*.pptx` (6 files, 179 slides) | Hook, Big Questions, concept diagrams, activities, role-plays, quizzes with answer slides, Myth or Fact games, mind maps, exit tickets and homework. Teacher notes are in each slide's speaker notes. |
+| Edubytez Slide Images | `Slide_Images/` (one folder per chapter, 179 JPGs) | Every slide as a 1920×1080 image for the website, named by chapter and slide number, e.g. `Edubytez_Grade9_SST_Ch1_Slide01.jpg`. |
 | Edubytez Activity Book | `Edubytez_Activity_Book_Grade9_SST_Part2.pdf` (46 A4 pages) | KWL warm-ups, crosswords, word searches, labelling, map work, sorting games, role-play sheets, projects, "I can…" self-checks, and an answer key for teachers. |
 | Edubytez Lesson Plans | [Claude Doc](https://claude.ai/code/artifact/3ce7e2b5-f406-4a20-98ac-7c989bbbf65b) | 61 periods of 40 minutes in the 5E model, mapped to slides and Activity Book pages, with outcomes, differentiation, homework and rubrics. |
 | Edubytez Question Bank | [Claude Doc](https://claude.ai/code/artifact/5d972043-6b26-4056-9a3d-2f93fb0615b6) | 198 CBSE-pattern questions (MCQ, assertion–reason, 2/3/5-mark, case-based, map and competency) with answer keys and marking points. |
