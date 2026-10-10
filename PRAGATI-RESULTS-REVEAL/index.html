@@ -1,0 +1,1350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>PRAGATI VIDYALAYA — Election Results Reveal 2026-27</title>
+<link href="fonts/fonts.css" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#ffd700;--gold2:#ffb300;--navy:#0d1b3e;--navy2:#1a237e;
+  --satya:#e53935;--shourya:#1565c0;--samriddhi:#2e7d32;--jnana:#6a1b9a;
+  --bg:#050814;--panel:rgba(255,255,255,.045);--panel-border:rgba(255,255,255,.09);
+}
+html,body{width:100%;height:100%;overflow:hidden}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:#fff}
+
+/* Soft ambient glow behind everything — replaces the old photo overlay */
+body::before{
+  content:'';position:fixed;inset:-25%;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(38% 32% at 16% 10%,rgba(26,35,126,.55),transparent 70%),
+    radial-gradient(30% 26% at 86% 16%,rgba(255,179,0,.09),transparent 70%),
+    radial-gradient(50% 42% at 50% 105%,rgba(13,27,62,.85),transparent 72%);
+  animation:aurora 22s ease-in-out infinite alternate;
+}
+@keyframes aurora{
+  0%{transform:translate3d(0,0,0) scale(1)}
+  100%{transform:translate3d(2%,-2%,0) scale(1.06)}
+}
+
+.screen{position:fixed;inset:0;display:none;z-index:1}
+.screen.active{display:flex}
+
+/* ═══ INTRO ═══ */
+#intro{flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 50% 22%,#1a237e 0%,#0d1b3e 52%,#04060f 100%)}
+#intro::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(60% 45% at 50% 0%,rgba(255,215,0,.10),transparent 70%);
+}
+#introParticles{position:absolute;inset:0;pointer-events:none}
+.intro-logo{width:clamp(110px,16vw,170px);height:clamp(110px,16vw,170px);border-radius:50%;
+  object-fit:cover;border:4px solid rgba(255,215,0,.65);box-shadow:0 0 70px rgba(255,215,0,.35);
+  z-index:2;animation:logoPulse 2.2s ease-in-out infinite}
+@keyframes logoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.intro-school{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,11vw,7.5rem);
+  letter-spacing:clamp(5px,1.5vw,14px);z-index:2;margin-top:28px;text-align:center;
+  background:linear-gradient(180deg,#fff2b8 0%,var(--gold) 45%,var(--gold2) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 34px rgba(255,215,0,.35));
+  opacity:0;animation:riseIn 1.2s .4s forwards}
+.intro-sub{font-size:clamp(.8rem,2vw,1.2rem);color:rgba(255,255,255,.45);letter-spacing:6px;
+  margin-top:10px;z-index:2;opacity:0;animation:riseIn 1s .9s forwards}
+.intro-divider{width:min(320px,50vw);height:2px;margin-top:22px;z-index:2;
+  background:linear-gradient(90deg,transparent,rgba(255,215,0,.7),transparent);
+  opacity:0;animation:riseIn 1s 1.1s forwards}
+.intro-election{font-size:clamp(.75rem,1.6vw,1rem);color:rgba(255,215,0,.55);letter-spacing:4px;
+  margin-top:18px;z-index:2;opacity:0;animation:riseIn 1s 1.3s forwards}
+.intro-year{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,4.5vw,3.2rem);
+  color:#fff;letter-spacing:10px;margin-top:8px;z-index:2;opacity:0;animation:riseIn 1s 1.6s forwards}
+@keyframes riseIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+.btn-main{margin-top:44px;padding:18px 52px;font-size:1rem;font-weight:900;letter-spacing:3px;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);border:none;
+  border-radius:50px;cursor:pointer;z-index:2;box-shadow:0 8px 36px rgba(255,215,0,.4);
+  opacity:0;animation:riseIn 1s 2.1s forwards;transition:transform .2s,box-shadow .2s}
+.btn-main:hover:not(:disabled){transform:scale(1.06);box-shadow:0 12px 48px rgba(255,215,0,.55)}
+.btn-main:disabled{opacity:.45;cursor:wait}
+
+/* ═══ MAIN APP ═══ */
+#app{display:none;flex-direction:column;min-height:100vh;position:relative;z-index:1}
+#app.active{display:flex}
+.topbar{
+  position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:12px 20px;background:rgba(4,7,18,.82);border-bottom:2px solid rgba(255,215,0,.22);
+  backdrop-filter:blur(14px);
+}
+.topbar-brand{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--gold);letter-spacing:3px;margin-right:auto}
+.nav-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.nav-tab{
+  padding:10px 20px;font-weight:800;font-size:.78rem;letter-spacing:2px;border:none;border-radius:10px;
+  cursor:pointer;background:rgba(255,255,255,.06);color:rgba(255,255,255,.55);transition:.2s;
+}
+.nav-tab:hover{background:rgba(255,255,255,.12);color:#fff}
+.nav-tab.active{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy)}
+.topbar-actions{display:flex;gap:6px}
+.tb-btn{padding:8px 14px;font-size:.7rem;font-weight:700;border:1px solid rgba(255,255,255,.15);
+  border-radius:8px;background:rgba(255,255,255,.05);color:rgba(255,255,255,.65);cursor:pointer;transition:.2s}
+.tb-btn:hover{background:rgba(255,255,255,.12);color:#fff}
+
+.page{display:none;flex:1;overflow-y:auto}
+.page.active{display:block}
+
+/* ═══ VOTE ENTRY PAGE ═══ */
+#votePage{padding:24px 20px 60px;position:relative;z-index:1}
+.vote-header{text-align:center;margin-bottom:32px}
+.vote-header h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3.5rem);color:var(--gold);letter-spacing:4px}
+.vote-header p{color:rgba(255,255,255,.45);margin-top:8px;font-size:.9rem;max-width:600px;margin-inline:auto;line-height:1.6}
+.vote-grid{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:24px}
+.vote-section{
+  background:var(--panel);border:2px solid var(--panel-border);border-radius:20px;
+  padding:22px;transition:.3s;
+}
+.vote-section.done{border-color:rgba(255,215,0,.4);background:rgba(255,215,0,.03)}
+.vs-head{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.vs-title{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);letter-spacing:2px}
+.vs-house{font-size:.75rem;font-weight:800;padding:4px 14px;border-radius:20px;letter-spacing:2px}
+.vs-house.satya{background:rgba(229,57,53,.2);color:#ef9a9a}
+.vs-house.shourya{background:rgba(21,101,192,.2);color:#90caf9}
+.vs-house.samriddhi{background:rgba(46,125,50,.2);color:#a5d6a7}
+.vs-house.jnana{background:rgba(106,27,154,.2);color:#ce93d8}
+.vs-done{margin-left:auto;font-size:.7rem;font-weight:800;color:#66bb6a;letter-spacing:1px}
+.cand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
+.cand-card{
+  background:rgba(0,0,0,.35);border:2px solid rgba(255,255,255,.1);border-radius:16px;
+  padding:14px;text-align:center;transition:.25s;
+}
+.cand-card:hover{border-color:rgba(255,215,0,.35);transform:translateY(-3px);box-shadow:0 10px 26px rgba(0,0,0,.35)}
+.cand-photo-wrap,.photo-frame{
+  width:100%;aspect-ratio:3/4;border-radius:12px;overflow:hidden;margin-bottom:10px;
+  background:linear-gradient(135deg,#1a237e,#0d1b3e);position:relative;
+  border:3px solid rgba(255,255,255,.12);box-shadow:inset 0 0 20px rgba(0,0,0,.3);
+}
+.cand-photo,.portrait-photo,.sc-photo,.ws-photo{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block;position:relative;z-index:1}
+.cand-photo-fallback{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-size:3rem;font-weight:900;color:rgba(255,215,0,.3);
+}
+.cand-card-name{font-weight:900;font-size:.88rem;line-height:1.2}
+.cand-card-meta{font-size:.65rem;color:rgba(255,255,255,.4);margin-top:4px}
+.vote-input-wrap{margin-top:12px}
+.vote-input-wrap label{display:block;font-size:.62rem;font-weight:800;color:rgba(255,215,0,.6);
+  letter-spacing:2px;margin-bottom:6px}
+.vote-input{
+  width:100%;padding:12px;border:2px solid rgba(255,215,0,.3);border-radius:10px;
+  background:rgba(0,0,0,.5);color:#fff;font-size:1.4rem;font-weight:900;text-align:center;
+  font-family:'Bebas Neue',sans-serif;letter-spacing:2px;
+}
+.vote-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 20px rgba(255,215,0,.2)}
+.btn-save-all{
+  display:block;margin:0 auto 28px;padding:16px 48px;font-weight:900;font-size:1rem;letter-spacing:3px;
+  border:none;border-radius:14px;cursor:pointer;
+  background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);
+  box-shadow:0 6px 28px rgba(255,215,0,.35);transition:.2s;
+}
+.btn-save-all:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(255,215,0,.5)}
+.save-status{text-align:center;font-size:.85rem;margin-bottom:20px;min-height:24px}
+.save-status.ok{color:#66bb6a;font-weight:800}
+.save-status.warn{color:#ffb74d;font-weight:700}
+
+/* ═══ REVEAL CEREMONY PAGE ═══ */
+#revealPage{padding:24px 20px 60px;position:relative;z-index:1}
+.reveal-header{text-align:center;margin-bottom:28px}
+.reveal-header h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vw,3.5rem);color:var(--gold);letter-spacing:4px}
+.reveal-header p{color:rgba(255,255,255,.45);margin-top:8px;font-size:.9rem;max-width:620px;margin-inline:auto;line-height:1.6}
+.ready-banner{
+  max-width:700px;margin:0 auto 28px;padding:14px 20px;border-radius:14px;text-align:center;
+  font-weight:800;font-size:.85rem;letter-spacing:1px;
+}
+.ready-banner.all-ready{background:rgba(46,125,50,.15);border:2px solid rgba(102,187,106,.4);color:#66bb6a}
+.ready-banner.not-ready{background:rgba(255,152,0,.1);border:2px solid rgba(255,183,77,.35);color:#ffb74d}
+.reveal-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+.reveal-card{
+  background:var(--panel);border:2px solid var(--panel-border);border-radius:20px;
+  padding:20px;text-align:center;transition:.3s;
+}
+.reveal-card:hover{transform:translateY(-2px)}
+.reveal-card.ready{border-color:rgba(255,215,0,.28)}
+.reveal-card.done{border-color:rgba(102,187,106,.4);background:rgba(46,125,50,.05)}
+.reveal-card.not-ready{opacity:.55}
+.rc-title{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:var(--gold);letter-spacing:2px}
+.rc-house{font-size:.7rem;font-weight:800;margin-top:4px;letter-spacing:2px}
+.rc-photos{display:flex;justify-content:center;gap:10px;margin:16px 0;flex-wrap:wrap}
+.rc-photo-item{width:72px;text-align:center}
+.rc-photo-frame{width:72px;aspect-ratio:3/4;border-radius:10px;overflow:hidden;border:2px solid rgba(255,255,255,.15);background:#1a237e;margin:0 auto}
+.rc-photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block}
+.rc-photo-item span{display:block;font-size:.58rem;color:rgba(255,255,255,.45);margin-top:4px;line-height:1.1}
+.rc-status{font-size:.68rem;font-weight:800;margin-bottom:12px;letter-spacing:1px}
+.rc-status.ready{color:#66bb6a}
+.rc-status.missing{color:#ffb74d}
+.rc-status.done{color:#66bb6a}
+.btn-reveal-big{
+  width:100%;padding:18px;font-weight:900;font-size:1rem;letter-spacing:3px;
+  border:none;border-radius:14px;cursor:pointer;transition:.2s;
+  background:linear-gradient(135deg,#b71c1c,#e53935);color:#fff;
+  box-shadow:0 6px 24px rgba(229,57,53,.4);
+}
+.btn-reveal-big:hover:not(:disabled){transform:scale(1.03);box-shadow:0 10px 36px rgba(229,57,53,.55)}
+.btn-reveal-big:disabled{opacity:.25;cursor:not-allowed;transform:none}
+.btn-reveal-big.done{background:linear-gradient(135deg,#1b5e20,#43a047);opacity:.7}
+
+/* ═══ REVEAL STAGE — fullscreen ═══ */
+#stageOverlay{
+  position:fixed;inset:0;z-index:200;display:none;pointer-events:none;
+  background:#02040c;overflow:hidden;
+  grid-template-rows:1fr auto;
+  grid-template-columns:1fr;
+}
+#stageOverlay.active{display:grid;pointer-events:auto}
+.stage-viewport{
+  position:relative;width:100%;height:100%;min-height:0;
+  background:radial-gradient(ellipse at 50% 30%,#1a237e 0%,#0d1b3e 52%,#02040c 100%);
+  display:flex;flex-direction:column;overflow:hidden;
+}
+/* Elegant spotlight beams — replaces the old spinning cone */
+.stage-lights{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.stage-lights::before,.stage-lights::after{
+  content:'';position:absolute;top:-25%;left:50%;width:26vmax;height:150%;
+  background:linear-gradient(180deg,rgba(255,215,0,.13),rgba(255,215,0,.03) 45%,transparent 72%);
+  transform-origin:top center;filter:blur(24px);
+}
+.stage-lights::before{animation:beamSwayL 9s ease-in-out infinite alternate}
+.stage-lights::after{animation:beamSwayR 11s ease-in-out infinite alternate}
+@keyframes beamSwayL{0%{transform:translateX(-50%) rotate(-22deg)}100%{transform:translateX(-50%) rotate(-8deg)}}
+@keyframes beamSwayR{0%{transform:translateX(-50%) rotate(22deg)}100%{transform:translateX(-50%) rotate(8deg)}}
+.stage-glow{
+  position:absolute;top:0;left:50%;transform:translateX(-50%);width:120vmax;height:40%;
+  background:radial-gradient(50% 100% at 50% 0%,rgba(255,215,0,.10),transparent 75%);
+  pointer-events:none;
+}
+.stage-panel{display:none;flex:1;flex-direction:column;align-items:center;min-height:0;z-index:2;width:100%}
+.stage-panel.active{display:flex}
+#countingView{padding:2vh 4vw 1vh;justify-content:flex-start}
+.stage-post{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,4.5vh,3.2rem);
+  color:var(--gold);letter-spacing:5px;text-align:center;flex-shrink:0;
+  text-shadow:0 0 40px rgba(255,215,0,.35)}
+.stage-house{font-size:clamp(.7rem,1.8vh,1rem);color:rgba(255,255,255,.45);letter-spacing:6px;
+  text-align:center;margin-top:.4vh;flex-shrink:0}
+.stage-msg{font-family:'Bebas Neue',sans-serif;font-size:clamp(1rem,2.8vh,1.8rem);
+  letter-spacing:4px;margin:1.5vh 0;flex-shrink:0;color:rgba(255,255,255,.65)}
+.stage-cands{
+  display:flex;flex-wrap:wrap;justify-content:center;align-content:center;gap:clamp(12px,2.5vw,28px);
+  flex:1;min-height:0;width:100%;padding:0 2vw;overflow:hidden;
+}
+.sc-card{
+  width:clamp(100px,min(16vw,18vh),180px);text-align:center;opacity:0;transform:translateY(20px);
+  flex-shrink:0;
+}
+.sc-card.show{animation:cardIn .6s forwards}
+@keyframes cardIn{to{opacity:1;transform:none}}
+.sc-card.suspense-active .sc-photo-wrap{animation:photoShake 0.35s ease-in-out infinite}
+.sc-card.suspense-active .sc-bar{animation:barFlicker 0.3s ease-in-out infinite alternate}
+@keyframes photoShake{
+  0%,100%{transform:scale(1) rotate(0deg)}
+  25%{transform:scale(1.03) rotate(-1deg)}
+  75%{transform:scale(1.03) rotate(1deg)}
+}
+@keyframes barFlicker{0%{filter:brightness(1)}100%{filter:brightness(1.35)}}
+.sc-photo-wrap{
+  width:100%;aspect-ratio:3/4;border-radius:16px;overflow:hidden;
+  border:3px solid rgba(255,255,255,.15);transition:.4s;margin-bottom:10px;
+  background:linear-gradient(135deg,#1a237e,#0d1b3e);
+  box-shadow:inset 0 0 24px rgba(0,0,0,.35);position:relative;
+}
+.sc-name{font-weight:900;font-size:clamp(.85rem,2vw,1.1rem)}
+.sc-bar-wrap{
+  height:clamp(14px,2.5vw,22px);background:rgba(0,0,0,.4);border-radius:10px;
+  margin-top:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);
+  box-shadow:inset 0 2px 8px rgba(0,0,0,.5);
+}
+.sc-bar{height:100%;width:0;border-radius:9px;transition:none;position:relative}
+.sc-bar::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(255,255,255,.25),transparent);border-radius:9px}
+.sc-votes{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.4rem,3.5vw,2.4rem);
+  margin-top:10px;letter-spacing:2px;transition:color .15s}
+.sc-votes.hidden{color:rgba(255,255,255,.12)}
+#stageOverlay.dramatic-flash .stage-viewport::after{
+  content:'';position:absolute;inset:0;background:rgba(255,215,0,.12);
+  animation:flashPulse 0.5s ease-out;pointer-events:none;z-index:3;
+}
+@keyframes flashPulse{0%{opacity:1}100%{opacity:0}}
+.h-satya .sc-bar{background:linear-gradient(90deg,#b71c1c,var(--satya))}
+.h-shourya .sc-bar{background:linear-gradient(90deg,#0d47a1,var(--shourya))}
+.h-samriddhi .sc-bar{background:linear-gradient(90deg,#1b5e20,var(--samriddhi))}
+.h-jnana .sc-bar{background:linear-gradient(90deg,#4a148c,var(--jnana))}
+.h-default .sc-bar{background:linear-gradient(90deg,#1a237e,#5c6bc0)}
+
+/* Winner announcement screen — now with candidate photo */
+#winnerView{justify-content:center;padding:3vh 6vw 2vh;text-align:center}
+.wv-label{font-size:clamp(.7rem,1.6vh,1rem);font-weight:800;letter-spacing:8px;
+  color:rgba(255,255,255,.55);animation:riseIn .5s forwards}
+.wv-post{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5.5vh,4rem);color:var(--gold);
+  letter-spacing:8px;text-shadow:0 0 60px rgba(255,215,0,.5);margin-top:.6vh;animation:riseIn .6s .05s both}
+.wv-photos{display:flex;justify-content:center;gap:clamp(14px,3vw,30px);margin-top:2.4vh;flex-wrap:wrap}
+.wv-photo-frame{
+  width:clamp(110px,20vh,190px);aspect-ratio:3/4;border-radius:18px;overflow:hidden;
+  border:4px solid var(--gold);box-shadow:0 0 60px rgba(255,215,0,.4),inset 0 0 24px rgba(0,0,0,.3);
+  background:linear-gradient(135deg,#1a237e,#0d1b3e);position:relative;
+  animation:winnerPhotoIn .8s cubic-bezier(.18,1.35,.4,1) .15s both;
+}
+.wv-photo-frame img{width:100%;height:100%;object-fit:cover;object-position:center 18%;display:block}
+@keyframes winnerPhotoIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+.wv-name{font-size:clamp(1.8rem,5vh,3.4rem);font-weight:900;margin-top:2.2vh;animation:riseIn .7s .3s both}
+.wv-class{font-size:clamp(1.1rem,2.8vh,1.8rem);color:rgba(255,215,0,.85);margin-top:1.4vh;letter-spacing:3px;animation:riseIn .7s .42s both}
+.wv-house{font-size:clamp(1rem,2.4vh,1.6rem);color:rgba(255,255,255,.75);margin-top:.8vh;letter-spacing:2px;animation:riseIn .7s .54s both}
+.wv-votes{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.6rem,4vh,2.8rem);
+  color:rgba(255,255,255,.6);letter-spacing:4px;margin-top:2vh;animation:riseIn .7s .66s both}
+
+/* Final scoreboard */
+#scoreboardView{padding:2vh 4vw 1vh;overflow-y:auto;min-height:0}
+.sb-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2rem,5vh,3.5rem);color:var(--gold);
+  letter-spacing:6px;text-align:center;margin-bottom:2vh;flex-shrink:0;
+  text-shadow:0 0 40px rgba(255,215,0,.3)}
+.sb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;width:100%;flex:1}
+.sb-section{background:var(--panel);border:1px solid rgba(255,215,0,.18);border-radius:14px;padding:14px}
+.sb-sec-title{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;color:var(--gold);letter-spacing:2px;margin-bottom:10px}
+.sb-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.82rem}
+.sb-row:last-child{border-bottom:none}
+.sb-row.winner{color:var(--gold);font-weight:800}
+.sb-row span:last-child{font-family:'Bebas Neue',sans-serif;font-size:1.1rem;letter-spacing:1px}
+
+/* Stage footer — buttons always visible, never clipped */
+.stage-footer{
+  position:relative;z-index:30;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  padding:10px 16px 16px;background:linear-gradient(transparent,rgba(0,0,0,.72));
+  min-height:68px;flex-shrink:0;
+}
+.stage-footer .btn-stage-next{grid-column:2;justify-self:center}
+.btn-stage-next{
+  padding:14px 56px;font-weight:900;letter-spacing:4px;font-size:clamp(.9rem,2vh,1.05rem);
+  background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);
+  border:none;border-radius:50px;cursor:pointer;transition:.2s;
+  box-shadow:0 8px 32px rgba(255,215,0,.45);min-width:220px;
+}
+.btn-stage-next:hover{transform:scale(1.04);box-shadow:0 12px 40px rgba(255,215,0,.6)}
+.btn-stage-next.hidden{visibility:hidden;pointer-events:none;opacity:0}
+.btn-back-list{
+  grid-column:1;justify-self:start;
+  padding:10px 22px;font-weight:700;letter-spacing:2px;font-size:.75rem;
+  background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);
+  color:rgba(255,255,255,.4);border-radius:50px;cursor:pointer;
+  backdrop-filter:blur(8px);transition:.2s;
+}
+.btn-back-list:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.75)}
+
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:300}
+.stage-watermark{position:absolute;bottom:8px;right:16px;font-size:.6rem;color:rgba(255,255,255,.12);letter-spacing:2px;z-index:2}
+
+/* Quick nav on vote page */
+.quick-nav{max-width:1100px;margin:0 auto 24px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.qn-btn{padding:6px 12px;font-size:.65rem;font-weight:700;border:1px solid rgba(255,255,255,.12);
+  border-radius:20px;background:rgba(255,255,255,.04);color:rgba(255,255,255,.5);cursor:pointer}
+.qn-btn:hover,.qn-btn.done{color:var(--gold);border-color:rgba(255,215,0,.3)}
+.qn-btn.done::before{content:'✓ '}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-thumb{background:rgba(255,215,0,.25);border-radius:3px}
+</style>
+</head>
+<body>
+
+<!-- ═══ INTRO ═══ -->
+<div id="intro" class="screen active">
+  <canvas id="introParticles"></canvas>
+  <img src="photos/school-logo.png" class="intro-logo" alt="Pragati Vidyalaya" onerror="this.style.display='none'">
+  <div class="intro-school">PRAGATI VIDYALAYA</div>
+  <div class="intro-sub">CHALLAKERE, KARNATAKA</div>
+  <div class="intro-divider"></div>
+  <div class="intro-election">SCHOOL PARLIAMENT ELECTION</div>
+  <div class="intro-year">RESULTS 2026-27</div>
+  <button class="btn-main" id="btnStart">BEGIN THE CEREMONY</button>
+</div>
+
+<!-- ═══ MAIN APP ═══ -->
+<div id="app">
+  <header class="topbar">
+    <div class="topbar-brand">PRAGATI VIDYALAYA</div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-page="revealPage">🎬 REVEAL CEREMONY</button>
+      <button class="nav-tab" data-page="votePage">🔒 SETUP VOTES</button>
+      <button class="nav-tab" data-page="helpPage">❓ HELP</button>
+    </div>
+    <div class="topbar-actions">
+      <button class="tb-btn" id="btnIntro">🎬 Intro</button>
+      <button class="tb-btn" id="btnFS">⛶ Fullscreen</button>
+    </div>
+  </header>
+
+  <!-- REVEAL CEREMONY (main — uses stored votes) -->
+  <div id="revealPage" class="page active">
+    <div class="reveal-header">
+      <h1>RESULTS REVEAL</h1>
+      <p>Press <strong>BEGIN THE CEREMONY</strong> on intro, or <strong>▶ REVEAL WINNER</strong> to jump to a specific post. Counting → freeze → NEXT → winner.</p>
+    </div>
+    <div class="ready-banner not-ready" id="readyBanner">⚠ Votes not set up yet — go to SETUP VOTES tab first</div>
+    <div class="reveal-grid" id="revealGrid"></div>
+  </div>
+
+  <!-- SETUP VOTES (enter in advance, chairman only) -->
+  <div id="votePage" class="page">
+    <div class="vote-header">
+      <h1>SETUP — ENTER VOTES IN ADVANCE</h1>
+      <p>Do this <strong>before the ceremony</strong>. Enter all vote counts, then press <strong>SAVE ALL VOTES</strong>. On the day, use the Reveal Ceremony tab — no typing needed.</p>
+    </div>
+    <button class="btn-save-all" id="btnSaveAll">💾 SAVE ALL VOTES</button>
+    <div style="text-align:center;margin:12px 0 20px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+      <button class="tb-btn" id="btnExportVotes">⬇ Export votes.json</button>
+      <button class="tb-btn" id="btnImportVotes">⬆ Import votes.json</button>
+      <input type="file" id="votesFileInput" accept=".json,application/json" hidden>
+    </div>
+    <div class="save-status" id="saveStatus"></div>
+    <div class="quick-nav" id="quickNav"></div>
+    <div class="vote-grid" id="voteGrid"></div>
+  </div>
+
+  <!-- HELP -->
+  <div id="helpPage" class="page" style="padding:40px 24px;max-width:700px;margin:0 auto;position:relative;z-index:1">
+    <h1 style="font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--gold);letter-spacing:3px;margin-bottom:20px">HOW TO USE</h1>
+    <h2 style="color:var(--gold);font-size:1.1rem;margin:20px 0 10px">BEFORE THE CEREMONY (today / tonight)</h2>
+    <ol style="line-height:2;color:rgba(255,255,255,.7);padding-left:20px;font-size:.95rem">
+      <li>Go to <strong>SETUP VOTES</strong> tab (chairman only — keep secret)</li>
+      <li>Enter vote counts under each candidate's photo</li>
+      <li>Press <strong>SAVE ALL VOTES</strong>, then <strong>Export votes.json</strong> and keep the file in this folder</li>
+    </ol>
+    <h2 style="color:var(--gold);font-size:1.1rem;margin:20px 0 10px">ON THE DAY (ceremony)</h2>
+    <ol style="line-height:2;color:rgba(255,255,255,.7);padding-left:20px;font-size:.95rem">
+      <li>Open page → <strong>BEGIN THE CEREMONY</strong> (starts Head Boy counting)</li>
+      <li>Counting animates → freezes on final votes (no winner yet)</li>
+      <li>Press <strong>NEXT</strong> → winner announced with photo + confetti</li>
+      <li>Press <strong>NEXT</strong> again → next post counting (Head Girl, etc.)</li>
+      <li>After all posts → <strong>FINAL RESULTS</strong> scoreboard</li>
+    </ol>
+    <h2 style="color:var(--gold);font-size:1.1rem;margin:20px 0 10px">SOUND</h2>
+    <p style="line-height:1.9;color:rgba(255,255,255,.7);font-size:.95rem">
+      Stadium crowd sound is <strong>built into the page</strong> — no audio files or internet needed.
+      The crowd murmurs during counting, builds as votes climb, and erupts with cheering and
+      applause when the winner appears. Just make sure the speaker volume is up.
+    </p>
+    <p style="margin-top:24px;color:rgba(255,255,255,.35);font-size:.8rem">Works offline. Copy the whole PRAGATI-RESULTS-REVEAL folder to USB (include votes.json). Open with OPEN-REVEAL.bat.</p>
+  </div>
+</div>
+
+<!-- ═══ REVEAL STAGE OVERLAY ═══ -->
+<div id="stageOverlay">
+  <div class="stage-viewport">
+    <div class="stage-lights"></div>
+    <div class="stage-glow"></div>
+    <div id="countingView" class="stage-panel active">
+      <div class="stage-post" id="sPost"></div>
+      <div class="stage-house" id="sHouse"></div>
+      <div class="stage-msg" id="sMsg">COUNTING VOTES...</div>
+      <div class="stage-cands" id="sCands"></div>
+    </div>
+    <div id="winnerView" class="stage-panel">
+      <div class="wv-label">🏆 WINNER 🏆</div>
+      <div class="wv-post" id="wvPost"></div>
+      <div class="wv-photos" id="wvPhotos"></div>
+      <div class="wv-name" id="wvName"></div>
+      <div class="wv-class" id="wvClass"></div>
+      <div class="wv-house" id="wvHouse"></div>
+      <div class="wv-votes" id="wvVotes"></div>
+    </div>
+    <div id="scoreboardView" class="stage-panel">
+      <div class="sb-title">FINAL RESULTS — SCHOOL PARLIAMENT 2026-27</div>
+      <div class="sb-grid" id="sbGrid"></div>
+    </div>
+    <div class="stage-watermark">PRAGATI VIDYALAYA • CHALLAKERE</div>
+  </div>
+  <div class="stage-footer">
+    <button class="btn-back-list" id="btnContinue">◀ BACK TO LIST</button>
+    <button class="btn-stage-next hidden" id="btnStageNext">NEXT</button>
+  </div>
+</div>
+<canvas id="confetti"></canvas>
+
+<script>
+let SECTIONS = [];
+let appReady = false;
+const revealed = new Set();
+const STORAGE_KEY = 'pragati_reveal_votes_v3';
+let storedVotes = {};  /* votes saved in advance — used at reveal time */
+let revealing = false, confettiAnim = null, confettiParts = [];
+let rampIv = null;
+let revealIndex = 0;
+let ceremonyPhase = 'idle';
+let currentSid = null;
+let stageBusy = false;
+const winnerAnnounced = new Set();
+const HOUSE_CLS = {Satya:'h-satya',Shourya:'h-shourya',Samriddhi:'h-samriddhi',Jnana:'h-jnana'};
+
+/* ════════════════════════════════════════════════════════════════
+   STADIUM CROWD ENGINE — real crowd sound synthesized with Web Audio.
+   No audio files needed: layered filtered noise = crowd murmur and
+   cheering swells, scheduled noise bursts = applause claps.
+   Intensity ramps with the vote count and erupts on the winner.
+   ════════════════════════════════════════════════════════════════ */
+const CrowdEngine = {
+  ctx: null, master: null, layers: null, noiseBuf: null,
+  clapTimer: null, currentLevel: 0,
+  AMBIENT: 0.22,
+
+  ensureCtx(){
+    if (this.ctx) return true;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return false;
+    const ctx = this.ctx = new AC();
+
+    this.master = ctx.createGain();
+    this.master.gain.value = 0;
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -20; comp.knee.value = 18;
+    comp.ratio.value = 5; comp.attack.value = 0.01; comp.release.value = 0.3;
+    this.master.connect(comp);
+    comp.connect(ctx.destination);
+
+    this.noiseBuf = this.makeNoiseBuffer(6);
+
+    /* Crowd body = noise through band-pass filters with slow swells.
+       Low band = deep murmur, mid = voices, high = excited cheering. */
+    this.layers = {
+      murmur: this.makeCrowdLayer(340, 0.7, 0.09, 0.35),
+      voices: this.makeCrowdLayer(820, 1.1, 0.16, 0.5),
+      cheer:  this.makeCrowdLayer(1500, 0.9, 0.27, 0.6),
+      roar:   this.makeCrowdLayer(560, 0.4, 0.06, 0.3)
+    };
+    return true;
+  },
+
+  /* Pink-ish noise (Paul Kellet filter) — sounds like air/crowd, not static */
+  makeNoiseBuffer(seconds){
+    const ctx = this.ctx;
+    const len = Math.floor(ctx.sampleRate * seconds);
+    const buf = ctx.createBuffer(2, len, ctx.sampleRate);
+    for (let ch = 0; ch < 2; ch++) {
+      const d = buf.getChannelData(ch);
+      let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+      for (let i = 0; i < len; i++) {
+        const w = Math.random() * 2 - 1;
+        b0 = 0.99886*b0 + w*0.0555179;
+        b1 = 0.99332*b1 + w*0.0750759;
+        b2 = 0.96900*b2 + w*0.1538520;
+        b3 = 0.86650*b3 + w*0.3104856;
+        b4 = 0.55000*b4 + w*0.5329522;
+        b5 = -0.7616*b5 - w*0.0168980;
+        d[i] = (b0+b1+b2+b3+b4+b5+b6 + w*0.5362) * 0.11;
+        b6 = w*0.115926;
+      }
+    }
+    return buf;
+  },
+
+  makeCrowdLayer(freq, q, lfoRate, lfoDepth){
+    const ctx = this.ctx;
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuf;
+    src.loop = true;
+    src.playbackRate.value = 0.85 + Math.random() * 0.3;
+
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = freq;
+    bp.Q.value = q;
+
+    const gain = ctx.createGain();
+    gain.gain.value = 0;
+
+    /* slow swell so the crowd feels alive, not a constant hiss */
+    const lfo = ctx.createOscillator();
+    lfo.frequency.value = lfoRate;
+    const lfoGain = ctx.createGain();
+    lfoGain.gain.value = 0;
+    lfo.connect(lfoGain);
+    lfoGain.connect(gain.gain);
+
+    src.connect(bp); bp.connect(gain); gain.connect(this.master);
+    src.start(0, Math.random() * 4);
+    lfo.start();
+    return { gain, lfoGain, lfoDepth };
+  },
+
+  setLayer(layer, value, tc = 0.25){
+    const t = this.ctx.currentTime;
+    layer.gain.gain.setTargetAtTime(value, t, tc);
+    layer.lfoGain.gain.setTargetAtTime(value * layer.lfoDepth, t, tc);
+  },
+
+  applyLevels(level){
+    if (!this.ensureCtx()) return;
+    const l = Math.max(0, Math.min(1, level));
+    this.currentLevel = l;
+    const t = this.ctx.currentTime;
+    this.master.gain.setTargetAtTime(0.10 + l * 0.55, t, 0.15);
+    this.setLayer(this.layers.murmur, 0.55 + l * 0.25);
+    this.setLayer(this.layers.voices, 0.22 + l * 0.55);
+    this.setLayer(this.layers.cheer,  l * l * 0.85);
+    this.setLayer(this.layers.roar,   Math.max(0, (l - 0.45) * 1.6));
+  },
+
+  /* Applause = many short high-frequency noise bursts (claps),
+     density scales with excitement level */
+  spawnClap(when){
+    const ctx = this.ctx;
+    const src = ctx.createBufferSource();
+    src.buffer = this.noiseBuf;
+    src.playbackRate.value = 0.8 + Math.random() * 0.7;
+    const bp = ctx.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 1400 + Math.random() * 2600;
+    bp.Q.value = 1.1;
+    const g = ctx.createGain();
+    const peak = 0.05 + Math.random() * 0.07;
+    g.gain.setValueAtTime(0, when);
+    g.gain.linearRampToValueAtTime(peak, when + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0008, when + 0.05 + Math.random() * 0.05);
+    let out = g;
+    if (ctx.createStereoPanner) {
+      const pan = ctx.createStereoPanner();
+      pan.pan.value = Math.random() * 1.6 - 0.8;
+      g.connect(pan); out = pan;
+    }
+    src.connect(bp); bp.connect(g); out.connect(this.master);
+    src.start(when, Math.random() * 4);
+    src.stop(when + 0.2);
+  },
+
+  startClapScheduler(){
+    if (this.clapTimer) return;
+    this.clapTimer = setInterval(() => {
+      if (!this.ctx || this.ctx.state !== 'running') return;
+      const l = this.currentLevel;
+      if (l < 0.12) return;
+      /* claps per 120ms window: sparse at ambient, dense at eruption */
+      const density = l * l * 6 + (l > 0.6 ? 3 : 0);
+      const n = Math.floor(density) + (Math.random() < density % 1 ? 1 : 0);
+      const now = this.ctx.currentTime;
+      for (let i = 0; i < n; i++) this.spawnClap(now + Math.random() * 0.12);
+    }, 120);
+  },
+
+  /* short whistle accents during the eruption — subtle, stadium-like */
+  spawnWhistle(when){
+    const ctx = this.ctx;
+    const osc = ctx.createOscillator();
+    const f0 = 2100 + Math.random() * 900;
+    osc.frequency.setValueAtTime(f0, when);
+    osc.frequency.linearRampToValueAtTime(f0 * (0.82 + Math.random() * 0.1), when + 0.55);
+    const vib = ctx.createOscillator();
+    vib.frequency.value = 9 + Math.random() * 5;
+    const vibG = ctx.createGain(); vibG.gain.value = 55;
+    vib.connect(vibG); vibG.connect(osc.frequency);
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(0, when);
+    g.gain.linearRampToValueAtTime(0.016 + Math.random() * 0.012, when + 0.06);
+    g.gain.exponentialRampToValueAtTime(0.0008, when + 0.6);
+    osc.connect(g); g.connect(this.master);
+    osc.start(when); osc.stop(when + 0.7);
+    vib.start(when); vib.stop(when + 0.7);
+  },
+
+  unlock(){
+    if (!this.ensureCtx()) return;
+    if (this.ctx.state === 'suspended') {
+      this.ctx.resume().catch(() => {});
+    }
+    this.startClapScheduler();
+  },
+
+  ensurePlaying(){ this.unlock(); },
+
+  startAmbient(){
+    this.unlock();
+    if (this.currentLevel < this.AMBIENT) this.applyLevels(this.AMBIENT);
+  },
+
+  startCeremony(){ this.startAmbient(); },
+
+  rampTo(level, ms = 600){
+    this.unlock();
+    const target = Math.max(0, Math.min(1, level));
+    if (rampIv) clearInterval(rampIv);
+    const start = this.currentLevel;
+    const diff = target - start;
+    const steps = Math.max(1, Math.round(ms / 40));
+    let step = 0;
+    rampIv = setInterval(() => {
+      step++;
+      this.applyLevels(start + diff * (step / steps));
+      if (step >= steps) { clearInterval(rampIv); rampIv = null; }
+    }, 40);
+  },
+
+  onRevealProgress(t){
+    const level = this.AMBIENT + Math.pow(Math.min(1, t), 1.35) * 0.55;
+    this.applyLevels(level);
+  },
+
+  stadiumEruption(){
+    if (rampIv) { clearInterval(rampIv); rampIv = null; }
+    this.unlock();
+    this.rampTo(1, 1200);
+    if (this.ctx) {
+      const now = this.ctx.currentTime;
+      const whistles = 3 + Math.floor(Math.random() * 3);
+      for (let i = 0; i < whistles; i++) {
+        this.spawnWhistle(now + 0.3 + Math.random() * 2.2);
+      }
+    }
+  },
+
+  rampToAmbient(ms = 700){
+    this.rampTo(this.AMBIENT, ms);
+  }
+};
+
+function $(id){return document.getElementById(id)}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+function photoFallback(name){return `<div class="cand-photo-fallback">${name.charAt(0)}</div>`}
+
+function ensureCrowdAudio(){ CrowdEngine.startAmbient(); }
+
+function getWinnerIndices(votes){
+  const max = Math.max(...votes, 0);
+  if (max === 0) return [];
+  return votes.map((v, i) => v === max ? i : -1).filter(i => i >= 0);
+}
+
+function getCeremonySections(){
+  return SECTIONS.filter(s => hasStoredVotes(s.id));
+}
+
+function getNextCountingSection(){
+  return getCeremonySections().find(s => !revealed.has(s.id));
+}
+
+function getImmediateNextSection(afterSid){
+  const idx = SECTIONS.findIndex(s => s.id === afterSid);
+  if (idx < 0 || idx >= SECTIONS.length - 1) return null;
+  return SECTIONS[idx + 1];
+}
+
+function getNextSectionInOrder(afterSid){
+  const idx = SECTIONS.findIndex(s => s.id === afterSid);
+  if (idx < 0) return null;
+  for (let i = idx + 1; i < SECTIONS.length; i++) {
+    if (hasStoredVotes(SECTIONS[i].id)) return SECTIONS[i];
+  }
+  return null;
+}
+
+function isLastCeremonySection(sid){
+  return !getImmediateNextSection(sid);
+}
+
+function toRoman(n){
+  const m={10:'X',9:'IX',8:'VIII',7:'VII',6:'VI',5:'V',4:'IV',3:'III',2:'II',1:'I'};
+  return m[n]||String(n);
+}
+
+function showStagePanel(id){
+  ['countingView','winnerView','scoreboardView'].forEach(p=>{
+    $(p).classList.toggle('active', p===id);
+  });
+}
+
+function setStageNext(visible, label='NEXT'){
+  const btn=$('btnStageNext');
+  btn.textContent=label;
+  btn.classList.toggle('hidden', !visible);
+  btn.disabled=!visible;
+}
+
+function portraitImg(src, name, cls='portrait-photo'){
+  return `<img class="${cls}" src="${src}" alt="${name}" onerror="this.style.opacity='.4'">`;
+}
+
+function hasStoredVotes(sid){
+  const v=storedVotes[sid];
+  if(!v||!v.length)return false;
+  return v.reduce((a,b)=>a+b,0)>0;
+}
+
+function getInputVotes(sid){
+  return SECTIONS.find(s=>s.id===sid).candidates.map((_,i)=>{
+    const inp=document.querySelector(`input[data-sid="${sid}"][data-ci="${i}"]`);
+    return parseInt(inp?.value,10)||0;
+  });
+}
+
+function getStoredVotes(sid){
+  return storedVotes[sid]||SECTIONS.find(s=>s.id===sid).candidates.map(()=>0);
+}
+
+function syncVotesFromInputs(){
+  let changed = false;
+  SECTIONS.forEach(s => {
+    const inputs = document.querySelectorAll(`input[data-sid="${s.id}"]`);
+    if (!inputs.length) return;
+    const votes = getInputVotes(s.id);
+    if (votes.reduce((a, b) => a + b, 0) > 0) {
+      storedVotes[s.id] = votes;
+      changed = true;
+    }
+  });
+  if (changed) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(storedVotes));
+    updateReadyBanner();
+  }
+  return changed;
+}
+
+function syncAllVotesFromInputs(){
+  let changed = false;
+  SECTIONS.forEach(s => {
+    const inputs = document.querySelectorAll(`input[data-sid="${s.id}"]`);
+    if (!inputs.length) return;
+    storedVotes[s.id] = getInputVotes(s.id);
+    changed = true;
+  });
+  if (changed) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(storedVotes));
+    updateReadyBanner();
+  }
+}
+
+function sectionLabel(sec){
+  return sec.house ? `${sec.title} — ${sec.house}` : sec.title;
+}
+
+function showMissingVotesNotice(sid){
+  const sec = SECTIONS.find(s => s.id === sid);
+  const name = sec ? sectionLabel(sec) : 'this post';
+  exitCeremony();
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.page === 'votePage'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  $('votePage').classList.add('active');
+  $('revealPage').classList.remove('active');
+  const banner = $('readyBanner');
+  banner.className = 'ready-banner not-ready';
+  banner.textContent = `⚠ Enter vote counts for "${name}" below, then press SAVE ALL VOTES`;
+  buildRevealUI();
+  const el = $('setup-' + sid);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.style.outline = '3px solid rgba(255,215,0,.6)';
+    setTimeout(() => { el.style.outline = ''; }, 3000);
+  }
+}
+
+function buildSetupUI(){
+  const grid=$('voteGrid'), qn=$('quickNav');
+  grid.innerHTML='';qn.innerHTML='';
+  SECTIONS.forEach(sec=>{
+    const houseCls=sec.house?sec.house.toLowerCase():'';
+    const card=document.createElement('div');
+    card.className='vote-section'+(hasStoredVotes(sec.id)?' done':'');
+    card.id='setup-'+sec.id;
+    const saved=storedVotes[sec.id]||[];
+
+    let candsHtml='';
+    sec.candidates.forEach((c,i)=>{
+      const val=saved[i]!==undefined?saved[i]:0;
+      candsHtml+=`<div class="cand-card">
+        <div class="cand-photo-wrap photo-frame">
+          ${portraitImg(c.photo,c.name,'cand-photo')}
+          ${photoFallback(c.name)}
+        </div>
+        <div class="cand-card-name">${c.name}</div>
+        <div class="cand-card-meta">Class ${c.class}-${c.section} • ${c.house}</div>
+        <div class="vote-input-wrap">
+          <label>NO. OF VOTES</label>
+          <input class="vote-input" type="number" min="0" placeholder="0" data-sid="${sec.id}" data-ci="${i}" value="${val}">
+        </div>
+      </div>`;
+    });
+
+    card.innerHTML=`
+      <div class="vs-head">
+        <div class="vs-title">${sec.title}</div>
+        ${sec.house?`<span class="vs-house ${houseCls}">${sec.house.toUpperCase()}</span>`:''}
+        ${hasStoredVotes(sec.id)?'<span class="vs-done">✓ SAVED</span>':''}
+      </div>
+      <div class="cand-grid">${candsHtml}</div>`;
+    grid.appendChild(card);
+
+    const qb=document.createElement('button');
+    qb.className='qn-btn'+(hasStoredVotes(sec.id)?' done':'');
+    qb.textContent=(sec.house?sec.title+' '+sec.house:sec.title);
+    qb.onclick=()=>card.scrollIntoView({behavior:'smooth',block:'center'});
+    qn.appendChild(qb);
+  });
+}
+
+function buildRevealUI(){
+  const grid=$('revealGrid');
+  grid.innerHTML='';
+  SECTIONS.forEach(sec=>{
+    const ready=hasStoredVotes(sec.id);
+    const done=revealed.has(sec.id);
+    const card=document.createElement('div');
+    card.className='reveal-card'+(done?' done':ready?' ready':' not-ready');
+    card.id='reveal-'+sec.id;
+
+    let photosHtml='';
+    sec.candidates.forEach(c=>{
+      photosHtml+=`<div class="rc-photo-item">
+        <div class="rc-photo-frame">${portraitImg(c.photo,c.name)}</div>
+        <span>${c.name.split(' ')[0]}</span>
+      </div>`;
+    });
+
+    let statusText, statusCls;
+    if(done){statusText='✓ REVEALED';statusCls='done'}
+    else if(ready){statusText='✓ VOTES READY';statusCls='ready'}
+    else{statusText='⚠ VOTES NOT SAVED';statusCls='missing'}
+
+    card.innerHTML=`
+      <div class="rc-title">${sec.title}</div>
+      ${sec.house?`<div class="rc-house" style="color:${sec.house==='Satya'?'#ef9a9a':sec.house==='Shourya'?'#90caf9':sec.house==='Samriddhi'?'#a5d6a7':'#ce93d8'}">${sec.house.toUpperCase()}</div>`:''}
+      <div class="rc-photos">${photosHtml}</div>
+      <div class="rc-status ${statusCls}">${statusText}</div>
+      <button class="btn-reveal-big${done?' done':''}" data-reveal="${sec.id}" ${!ready||done?'disabled':''}>
+        ${done?'✓ REVEALED':'▶ REVEAL WINNER'}
+      </button>`;
+    grid.appendChild(card);
+  });
+  updateReadyBanner();
+}
+
+function onRevealButtonClick(sid){
+  if(revealing || (revealed.has(sid) && winnerAnnounced.has(sid))) return;
+  startReveal(sid);
+}
+
+function updateReadyBanner(){
+  const banner=$('readyBanner');
+  const readyCount=SECTIONS.filter(s=>hasStoredVotes(s.id)).length;
+  const total=SECTIONS.length;
+  if(readyCount===total){
+    banner.className='ready-banner all-ready';
+    banner.textContent=`✓ ALL ${total} POSTS READY — Press REVEAL WINNER for each section`;
+  }else if(readyCount>0){
+    banner.className='ready-banner not-ready';
+    banner.textContent=`⚠ ${readyCount} of ${total} posts have votes saved — complete SETUP VOTES tab`;
+  }else{
+    banner.className='ready-banner not-ready';
+    banner.textContent='⚠ Votes not set up yet — go to SETUP VOTES tab, enter counts, and SAVE ALL VOTES';
+  }
+}
+
+function persistVotes(savedAt){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(storedVotes));
+  localStorage.setItem(STORAGE_KEY + '_time', savedAt);
+}
+
+function saveAllVotes(){
+  SECTIONS.forEach(s => { storedVotes[s.id] = getInputVotes(s.id); });
+  const savedAt = new Date().toLocaleString();
+  persistVotes(savedAt);
+  $('saveStatus').className = 'save-status ok';
+  $('saveStatus').textContent = `✓ All votes saved at ${savedAt}`;
+  buildSetupUI();
+  buildRevealUI();
+}
+
+function exportVotesFile(){
+  syncAllVotesFromInputs();
+  const payload = { votes: storedVotes, savedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'votes.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  $('saveStatus').className = 'save-status ok';
+  $('saveStatus').textContent = '✓ votes.json downloaded — copy it into this folder for backup';
+}
+
+function importVotesFile(file){
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const data = JSON.parse(reader.result);
+      storedVotes = data.votes || data;
+      const savedAt = data.savedAt ? new Date(data.savedAt).toLocaleString() : new Date().toLocaleString();
+      persistVotes(savedAt);
+      $('saveStatus').className = 'save-status ok';
+      $('saveStatus').textContent = `✓ Votes imported (${savedAt})`;
+      buildSetupUI();
+      buildRevealUI();
+    } catch (e) {
+      $('saveStatus').className = 'save-status warn';
+      $('saveStatus').textContent = '⚠ Could not read votes file';
+    }
+  };
+  reader.readAsText(file);
+}
+
+async function loadStoredVotes(){
+  try {
+    const res = await fetch('votes.json');
+    if (res.ok) {
+      const data = await res.json();
+      storedVotes = data.votes || data;
+      const t = data.savedAt ? new Date(data.savedAt).toLocaleString() : 'from votes.json';
+      persistVotes(t);
+      $('saveStatus').className = 'save-status ok';
+      $('saveStatus').textContent = `✓ Votes loaded (${t})`;
+      return;
+    }
+  } catch (e) {}
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (raw) {
+    try { storedVotes = JSON.parse(raw); } catch (e) { storedVotes = {}; }
+  }
+  const t = localStorage.getItem(STORAGE_KEY + '_time');
+  if (t && Object.keys(storedVotes).length) {
+    $('saveStatus').className = 'save-status ok';
+    $('saveStatus').textContent = `✓ Votes loaded (saved ${t})`;
+  }
+}
+
+function buildUI(){
+  buildSetupUI();
+  buildRevealUI();
+}
+
+/* Counting animation — random votes & bars, then freeze together (no winner) */
+async function runCountingAnimation(cards, votes){
+  const maxV = Math.max(...votes, 1);
+  const duration = 6500;
+  const start = performance.now();
+
+  return new Promise(resolve => {
+    function tick(now){
+      const t = Math.min(1, (now - start) / duration);
+      CrowdEngine.onRevealProgress(t);
+
+      if(t < 1){
+        cards.forEach((c, i) => {
+          const wave = Math.sin(t * 14 + i * 2.1) * 0.5 + 0.5;
+          const fake = Math.round(wave * maxV * (0.35 + Math.random() * 0.55) + Math.random() * 12);
+          c.votesEl.textContent = fake;
+          c.votesEl.className = 'sc-votes';
+          c.bar.style.width = Math.max(4, (fake / maxV) * 88 + Math.random() * 8) + '%';
+          c.el.classList.add('suspense-active');
+        });
+        requestAnimationFrame(tick);
+      } else {
+        cards.forEach((c, i) => {
+          c.el.classList.remove('suspense-active');
+          const v = votes[i];
+          const pct = (v / maxV) * 100;
+          c.votesEl.textContent = v;
+          c.votesEl.className = 'sc-votes';
+          c.bar.style.width = Math.max(pct, v > 0 ? 6 : 0) + '%';
+        });
+        resolve();
+      }
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+async function beginSectionCounting(sid){
+  if(revealing) return;
+  syncVotesFromInputs();
+  if(!hasStoredVotes(sid)){
+    showMissingVotesNotice(sid);
+    return;
+  }
+
+  revealing = true;
+  revealIndex++;
+  currentSid = sid;
+  ceremonyPhase = 'counting';
+  const votes = getStoredVotes(sid);
+  const sec = SECTIONS.find(s => s.id === sid);
+  const hCls = sec.house ? HOUSE_CLS[sec.house] : 'h-default';
+
+  ensureCrowdAudio();
+  CrowdEngine.startCeremony();
+  $('stageOverlay').classList.add('active');
+  $('stageOverlay').classList.remove('dramatic-flash');
+  showStagePanel('countingView');
+  setStageNext(false);
+  stopConfetti();
+
+  $('sPost').textContent = sec.title;
+  $('sHouse').textContent = sec.house || '';
+  $('sMsg').textContent = 'COUNTING VOTES...';
+  $('sCands').innerHTML = '';
+
+  CrowdEngine.rampTo(0.38, 600);
+  await sleep(400);
+
+  const cards = [];
+  sec.candidates.forEach((c, i) => {
+    const el = document.createElement('div');
+    el.className = `sc-card ${hCls}`;
+    el.innerHTML = `
+      <div class="sc-photo-wrap photo-frame">${portraitImg(c.photo, c.name, 'sc-photo')}</div>
+      <div class="sc-name">${c.name}</div>
+      <div class="sc-bar-wrap"><div class="sc-bar"></div></div>
+      <div class="sc-votes">0</div>`;
+    $('sCands').appendChild(el);
+    setTimeout(() => el.classList.add('show'), i * 200);
+    cards.push({ el, bar: el.querySelector('.sc-bar'), votesEl: el.querySelector('.sc-votes'), target: votes[i] });
+  });
+  await sleep(sec.candidates.length * 200 + 400);
+
+  CrowdEngine.rampTo(0.55, 800);
+  await runCountingAnimation(cards, votes);
+
+  ceremonyPhase = 'frozen';
+  $('sMsg').textContent = 'FINAL VOTE COUNT';
+  setStageNext(true, 'NEXT');
+  revealing = false;
+}
+
+function showWinnerScreen(sid, votes){
+  const sec = SECTIONS.find(s => s.id === sid);
+  const winIndices = getWinnerIndices(votes);
+  const isTie = winIndices.length > 1;
+  const winners = winIndices.map(i => sec.candidates[i]);
+  const maxVotes = votes[winIndices[0]] || 0;
+
+  ceremonyPhase = 'winner';
+  showStagePanel('winnerView');
+  const nextSec = getImmediateNextSection(sid);
+  setStageNext(true, nextSec ? 'NEXT' : 'NEXT — FINAL RESULTS');
+
+  $('wvPost').textContent = isTie ? `${sec.title} — TIE` : sec.title;
+  $('wvPhotos').innerHTML = winners.map(w =>
+    `<div class="wv-photo-frame">${portraitImg(w.photo, w.name)}</div>`
+  ).join('');
+  $('wvName').textContent = winners.map(w => w.name).join(' & ');
+  $('wvClass').textContent = winners.map(w => `Class ${toRoman(parseInt(w.class, 10))}`).join(' • ');
+  $('wvHouse').textContent = [...new Set(winners.map(w => `${w.house} House`))].join(' • ');
+  $('wvVotes').textContent = isTie ? `${maxVotes} VOTES EACH` : `${maxVotes} VOTES`;
+
+  $('stageOverlay').classList.add('dramatic-flash');
+  CrowdEngine.stadiumEruption();
+  launchConfetti();
+  winnerAnnounced.add(sid);
+  revealed.add(sid);
+  buildRevealUI();
+}
+
+function showFinalScoreboard(){
+  ceremonyPhase = 'scoreboard';
+  showStagePanel('scoreboardView');
+  setStageNext(true, 'CLOSE');
+  stopConfetti();
+  CrowdEngine.rampToAmbient(900);
+
+  const grid = $('sbGrid');
+  grid.innerHTML = '';
+  SECTIONS.filter(s => hasStoredVotes(s.id)).forEach(sec => {
+    const votes = getStoredVotes(sec.id);
+    const winIndices = getWinnerIndices(votes);
+    const block = document.createElement('div');
+    block.className = 'sb-section';
+    let rows = '';
+    sec.candidates.forEach((c, i) => {
+      rows += `<div class="sb-row${winIndices.includes(i) ? ' winner' : ''}"><span>${c.name}</span><span>${votes[i]}</span></div>`;
+    });
+    block.innerHTML = `<div class="sb-sec-title">${sectionLabel(sec)}</div>${rows}`;
+    grid.appendChild(block);
+  });
+}
+
+async function onStageNextClick(){
+  if(stageBusy) return;
+  stageBusy = true;
+  setStageNext(false);
+  try{
+    if(ceremonyPhase === 'frozen'){
+      const votes = getStoredVotes(currentSid);
+      showWinnerScreen(currentSid, votes);
+      return;
+    }
+    if(ceremonyPhase === 'winner'){
+      stopConfetti();
+      CrowdEngine.rampToAmbient(600);
+      $('stageOverlay').classList.remove('dramatic-flash');
+      syncAllVotesFromInputs();
+      const next = getImmediateNextSection(currentSid);
+      if(!next){
+        showFinalScoreboard();
+      } else if(!hasStoredVotes(next.id)){
+        showMissingVotesNotice(next.id);
+      } else {
+        await beginSectionCounting(next.id);
+      }
+      return;
+    }
+    if(ceremonyPhase === 'scoreboard'){
+      exitCeremony();
+    }
+  } finally {
+    stageBusy = false;
+  }
+}
+
+async function startCeremony(){
+  syncVotesFromInputs();
+  await loadStoredVotes();
+  const headBoy = SECTIONS.find(s => s.id === 'p1');
+  const first = (headBoy && hasStoredVotes('p1')) ? headBoy : getCeremonySections()[0];
+  if(!first){
+    showMissingVotesNotice('p1');
+    return;
+  }
+  try{
+    if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+  }catch(e){}
+  $('intro').classList.remove('active');
+  $('app').classList.remove('active');
+  await beginSectionCounting(first.id);
+}
+
+function exitCeremony(){
+  $('stageOverlay').classList.remove('active','dramatic-flash');
+  CrowdEngine.rampToAmbient(800);
+  stopConfetti();
+  setStageNext(false);
+  ceremonyPhase = 'idle';
+  currentSid = null;
+  $('app').classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.toggle('active', t.dataset.page === 'revealPage'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  $('revealPage').classList.add('active');
+  buildRevealUI();
+}
+
+function closeStage(){
+  exitCeremony();
+}
+
+async function startReveal(sid){
+  ensureCrowdAudio();
+  $('intro').classList.remove('active');
+  $('app').classList.remove('active');
+  try{
+    if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+  }catch(e){}
+  await beginSectionCounting(sid);
+}
+
+function launchConfetti(){
+  const c=$('confetti');c.width=innerWidth;c.height=innerHeight;
+  const cols=['#ffd700','#ff6b35','#fff','#e53935','#1565c0','#2e7d32','#6a1b9a'];
+  confettiParts=Array.from({length:350},()=>({
+    x:Math.random()*c.width,y:-20-Math.random()*c.height,
+    w:6+Math.random()*8,h:4+Math.random()*6,
+    color:cols[Math.floor(Math.random()*cols.length)],
+    vx:(Math.random()-.5)*7,vy:2+Math.random()*7,rot:Math.random()*360,vr:(Math.random()-.5)*14
+  }));
+  if(confettiAnim)cancelAnimationFrame(confettiAnim);
+  (function draw(){
+    const ctx=c.getContext('2d');ctx.clearRect(0,0,c.width,c.height);
+    let alive=0;
+    confettiParts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;p.vy+=.13;p.rot+=p.vr;
+      if(p.y<c.height+20){alive++;
+        ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.rot*Math.PI/180);
+        ctx.fillStyle=p.color;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore();
+      }
+    });
+    if(alive>0)confettiAnim=requestAnimationFrame(draw);
+  })();
+}
+function stopConfetti(){
+  if(confettiAnim){cancelAnimationFrame(confettiAnim);confettiAnim=null}
+  $('confetti').getContext('2d').clearRect(0,0,innerWidth,innerHeight);
+}
+
+function initParticles(){
+  const c=$('introParticles');if(!c)return;
+  c.width=innerWidth;c.height=innerHeight;
+  const ctx=c.getContext('2d');
+  const pts=Array.from({length:90},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:1+Math.random()*2.5,vy:-.2-Math.random()*.6,a:.1+Math.random()*.5}));
+  (function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{p.y+=p.vy;if(p.y<0){p.y=c.height;p.x=Math.random()*c.width}
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=`rgba(255,215,0,${p.a})`;ctx.fill()});
+    if($('intro').classList.contains('active'))requestAnimationFrame(draw);
+  })();
+}
+
+async function initApp(){
+  const btn = $('btnStart');
+  btn.disabled = true;
+  btn.textContent = 'LOADING...';
+  try {
+    const res = await fetch('sections.json');
+    if (!res.ok) throw new Error('sections.json not found');
+    SECTIONS = await res.json();
+    await loadStoredVotes();
+    buildUI();
+    appReady = true;
+    btn.disabled = false;
+    btn.textContent = 'BEGIN THE CEREMONY';
+    initParticles();
+  } catch (e) {
+    btn.textContent = 'OPEN WITH OPEN-REVEAL.bat';
+    $('saveStatus').className = 'save-status warn';
+    $('saveStatus').textContent = '⚠ Could not load sections.json — use OPEN-REVEAL.bat';
+  }
+}
+
+/* Events */
+$('btnStart').addEventListener('click', () => {
+  if (!appReady) return;
+  ensureCrowdAudio();
+  startCeremony();
+});
+$('btnContinue').addEventListener('click',()=>exitCeremony());
+$('btnStageNext').addEventListener('click',()=>onStageNextClick());
+
+/* Event delegation — survives UI rebuilds, fixes unresponsive buttons */
+$('revealGrid').addEventListener('click',(e)=>{
+  const btn = e.target.closest('.btn-reveal-big');
+  if(!btn || btn.disabled) return;
+  onRevealButtonClick(btn.dataset.reveal);
+});
+document.querySelectorAll('.nav-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    $(tab.dataset.page).classList.add('active');
+  });
+});
+$('btnSaveAll').addEventListener('click', saveAllVotes);
+$('btnExportVotes').addEventListener('click', exportVotesFile);
+$('btnImportVotes').addEventListener('click', () => $('votesFileInput').click());
+$('votesFileInput').addEventListener('change', (e) => {
+  if (e.target.files[0]) importVotesFile(e.target.files[0]);
+  e.target.value = '';
+});
+$('btnIntro').addEventListener('click',()=>{$('app').classList.remove('active');$('intro').classList.add('active');initParticles()});
+$('btnFS').addEventListener('click',()=>{
+  if(!document.fullscreenElement)document.documentElement.requestFullscreen();
+  else document.exitFullscreen();
+});
+window.addEventListener('resize',()=>{$('confetti').width=innerWidth;$('confetti').height=innerHeight});
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='Escape' && $('stageOverlay').classList.contains('active')) exitCeremony();
+});
+
+document.addEventListener('click', function onFirstCrowdUnlock(){
+  CrowdEngine.unlock();
+  document.removeEventListener('click', onFirstCrowdUnlock);
+}, { once: true });
+
+initApp();
+</script>
+</body>
+</html>
